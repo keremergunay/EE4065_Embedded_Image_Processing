@@ -114,7 +114,7 @@ The conversion is handled by a two-part Python system: a reusable library (`Imag
 ### 🔹 Results (Q1)
 * **Original Grayscale Image (160x120):** `mandrill_grayscaled.png`
 * **Memory Observation (Q1):**
-    > ![Proje Logosu](EE4065_HW1/memory shots/grayscaled.jpg)
+![Proje Logosu](EE4065_HW1/memory shots/grayscaled.jpg)
     >
     > Bu ekran görüntüsü, `mandrill.h` dosyasındaki verilerin STM32'nin flash belleğine doğru bir şekilde yüklendiğini doğrular.
 
