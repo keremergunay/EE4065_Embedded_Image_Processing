@@ -114,9 +114,8 @@ The conversion is handled by a two-part Python system: a reusable library (`Imag
 ### 🔹 Results (Q1)
 * **Original Grayscale Image (160x120):** `mandrill_grayscaled.png`
 * **Memory Observation (Q1):**
-![Proje Logosu](EE4065_HW1/memory shots/grayscaled.jpg)
-    >
-    > Bu ekran görüntüsü, `mandrill.h` dosyasındaki verilerin STM32'nin flash belleğine doğru bir şekilde yüklendiğini doğrular.
+![grayscaled](https://github.com/user-attachments/assets/305b0aae-e868-49b3-aa7c-021ada7c7363)
+
 
 ## Q2 — Intensity Transformations (60 pts)
 ### 🔹 Objective
@@ -211,32 +210,43 @@ for (int i = 0; i < IMG_SIZE; i++)
 ### 🔹 Results (Q2)
 **2a — Negative Image**
 * **Description:** Inverts all pixel intensities ($s = 255 - r$).
-* **Python Result:** `mandrill_nega.png`
+* **Python Result:** `mandrill_nega.png`<img width="160" height="120" alt="mandrill_nega" src="https://github.com/user-attachments/assets/beef5084-b270-409f-afb7-ecb7f6e636d7" />
+
 * **STM32 Memory Result:**
-    > [BURAYA g_negativeImage DİZİSİNİN MEMORY GÖRÜNTÜSÜNÜ EKLEYİN]
+    > ![negative](https://github.com/user-attachments/assets/0bd91fd7-9b92-4a5e-97b0-659023414859)
+
 
 **2b — Thresholding**
 * **Description:** Converts the image to binary. Pixels > 128 become 255 (white), others 0 (black).
-* **Python Result:** `mandrill_threshold.png`
+* **Python Result:** `mandrill_threshold.png`<img width="160" height="120" alt="mandrill_threshold" src="https://github.com/user-attachments/assets/4b8555c0-74cb-4df6-a2d0-6ed23de1758e" />
+
 * **STM32 Memory Result:**
-    > [BURAYA g_thresholdImage DİZİSİNİN MEMORY GÖRÜNTÜSÜNÜ EKLEYİN]
+    > ![threshold](https://github.com/user-attachments/assets/8b6a5c32-e3ca-4d54-a150-1ab3ff598ffd)
+
 
 **2c — Gamma Correction**
 * **Description:** Adjusts image brightness using $s = 255 \cdot (r/255)^\gamma$. Implemented via LUT.
 * **Gamma = 3.0: (Darkens the image)**
-    * **Python Result:** `mandrill_gamma3.png`
+    * **Python Result:** `mandrill_gamma3.png`<img width="160" height="120" alt="mandrill_gamma3" src="https://github.com/user-attachments/assets/b6389da1-fd0d-4c1e-b27b-23b310310e0c" />
+
     * **STM32 Memory Result:**
-        > [BURAYA g_gammaImage_3 DİZİSİNİN MEMORY GÖRÜNTÜSÜNÜ EKLEYİN]
+        > ![gamma3](https://github.com/user-attachments/assets/c794216e-e1a9-4436-b827-2a95b45e2c23)
+
 * **Gamma = 1/3: (Brightens the image)**
-    * **Python Result:** `mandrill_gamma1_3.png`
+    * **Python Result:** `mandrill_gamma1_3.png`<img width="160" height="120" alt="mandrill_gamma1_3" src="https://github.com/user-attachments/assets/b53f7daf-327e-43c7-8277-265935ce6f77" />
+
     * **STM32 Memory Result:**
-        > [BURAYA g_gammaImage_1_3 DİZİSİNİN MEMORY GÖRÜNTÜSÜNÜ EKLEYİN]
+        > ![gamma13](https://github.com/user-attachments/assets/16d84540-1a46-4a5d-9c3c-dc254487a0cf)
+
 
 **2d — Piecewise Linear Transformation**
 * **Description:** Stretches the contrast of the [50, 200] pixel range to the full [0, 255] range. Implemented via LUT.
-* **Python Result:** `mandrill_piecewise.png`
+* **Python Result:** `mandrill_piecewise.png`<img width="160" height="120" alt="mandrill_piecewise" src="https://github.com/user-attachments/assets/62ed8f41-8fa2-4d3c-b8b8-1652416ec6bf" />
+
 * **STM32 Memory Result:**
-    > [BURAYA g_piecewiseImage DİZİSİNİN MEMORY GÖRÜNTÜSÜNÜ EKLEYİN]
+
+    > ![piecewise](https://github.com/user-attachments/assets/0e2b25b0-c445-46e6-9c5f-daedb92268ac)
+
 ## 🧪 Testing & Verification
 To verify the correctness of the STM32 C code, a parallel Python script (`verify_results.py`) was used. This script performs the exact same operations as the C code (including generating identical LUTs) and prints the first 20 hexadecimal values for each transformation.
 
