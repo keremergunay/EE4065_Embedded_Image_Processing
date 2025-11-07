@@ -1,4 +1,4 @@
-# 🎓 EE4065 – Embedded Digital Image Processing
+# EE4065 – Embedded Digital Image Processing
 
 ### Course Repository – Homework Collection
 
@@ -8,18 +8,18 @@ This repository is dedicated to the coursework for **EE4065 Embedded Digital Ima
 
 ## ℹ️ Repository Information
 
-| Category | Detail |
-| :--- | :--- |
-| **Semester** | Fall 2025 |
-| **Team Members:**  
-| - Kerem Ergünay |
-| - Tarık Erdoğan |
+
+**Semester**  Fall 2025 
+
+**Team Members:**  
+- Kerem Ergünay 
+- Tarık Erdoğan 
 
 ---
 
 ## 📁 Repository Content
 
-[cite_start]This repository contains all homework assignments, including reports, source codes, and results.
+This repository contains all homework assignments, including reports, source codes, and results.
 
 Each homework assignment is located in its own designated folder (e.g., `EE4065_HW1`).
 
