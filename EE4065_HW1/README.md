@@ -112,7 +112,8 @@ The conversion is handled by a two-part Python system: a reusable library (`Imag
 6.  Open the Memory Window and monitor `GRAYSCALE_IMG_ARRAY` to verify the data is loaded.
 
 ### 🔹 Results (Q1)
-* **Original Grayscale Image (160x120):** `mandrill_grayscaled.png`
+* **Original Grayscale Image (160x120):** `mandrill_grayscaled.png`<img width="160" height="120" alt="mandrill_grayscaled" src="https://github.com/user-attachments/assets/e21b4f41-fde6-4055-ad95-c9805f936b8c" />
+
 * **Memory Observation (Q1):**
 ![grayscaled](https://github.com/user-attachments/assets/305b0aae-e868-49b3-aa7c-021ada7c7363)
 
