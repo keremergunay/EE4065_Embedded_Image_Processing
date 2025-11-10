@@ -17,7 +17,8 @@ The C-code implementation is optimized using **Look-Up Tables (LUTs)** for Gamma
 
 ## 🛠️ Hardware & Software
 * **Hardware:** STM32 Development Board (ARM Cortex-M)
-* **Software (PC):** * Python 3.x (w/ OpenCV, Numpy)
+* **Software (PC):**
+    * Python 3.x (w/ OpenCV, Numpy)
     * STM32CubeIDE
 * **Image:** mandrill.tiff, processed to 160x120 grayscale.
 
