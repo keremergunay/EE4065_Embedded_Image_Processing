@@ -2,7 +2,8 @@
 ## Homework 1
 **Due Date:** November 7, 2025 — 23:59
 
-**Team Members:** * Kerem Ergünay
+**Team Members:** 
+* Kerem Ergünay
 * Tarık Erdoğan
 
 ---
