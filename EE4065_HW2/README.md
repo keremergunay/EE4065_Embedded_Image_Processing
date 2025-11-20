@@ -45,7 +45,7 @@ The mathematical derivation of the histogram equalization method (Transformation
 
 | Page 1 | Page 2 |
 | :---: | :---: |
-| ![Derivation Part 1](EE4065_HW2/Images/1.jpg) | ![Derivation Part 2](EE4065_HW2/Images/2.jpg) |
+| ![Derivation Part 1](Images/1.jpg) | ![Derivation Part 2](Images/2.jpg) |
 
 ### B. Implementation & Results
 The algorithm calculates the Cumulative Distribution Function (CDF) of the original histogram and maps the pixel values to new values to achieve a uniform histogram distribution.
