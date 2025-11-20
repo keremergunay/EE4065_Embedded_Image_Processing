@@ -25,6 +25,7 @@
 #include "mandrill.h"  // Az önce sürüklediğin dosya
 #include <string.h>
 #include <stdlib.h>
+#include <stdint.h>
 /* USER CODE END Includes */
 /* USER CODE END Includes */
 
@@ -64,6 +65,14 @@ uint8_t img_med[IMG_SIZE];
 uint32_t hist_orig[256];
 uint32_t hist_eq[256];
 
+
+/* --- SERIAL PROTOCOL DEFINES --- */
+#define HDR_S  'S'
+#define HDR_T  'T'
+#define MCU_WRITES  87
+#define MCU_READS   82
+
+#define IMAGE_FORMAT_GRAYSCALE 1
 /* USER CODE END PV */
 
 /* USER CODE END PV */
@@ -217,6 +226,35 @@ void median_filter3x3(const uint8_t *in, uint8_t *out, uint32_t w, uint32_t h) {
     }
 }
 
+
+static HAL_StatusTypeDef uart_tx(const uint8_t *buf, uint16_t len, uint32_t timeout)
+{
+    return HAL_UART_Transmit(&huart2, (uint8_t*)buf, len, timeout);
+}
+
+static HAL_StatusTypeDef uart_rx(uint8_t *buf, uint16_t len, uint32_t timeout)
+{
+    return HAL_UART_Receive(&huart2, buf, len, timeout);
+}
+
+
+void SERIAL_SendImage(uint8_t rqType, uint16_t height, uint16_t width,
+                      uint8_t format, const uint8_t *imgBuf, uint32_t size)
+{
+    uint8_t header[8];
+    header[0] = HDR_S;
+    header[1] = HDR_T;
+    header[2] = rqType;
+    header[3] = (uint8_t)(height & 0xFF);
+    header[4] = (uint8_t)(height >> 8);
+    header[5] = (uint8_t)(width & 0xFF);
+    header[6] = (uint8_t)(width >> 8);
+    header[7] = format;
+
+    uart_tx(header, 8, HAL_MAX_DELAY);
+    uart_tx(imgBuf, size, HAL_MAX_DELAY);
+}
+
 /* USER CODE END 0 */
 
 /* USER CODE END 0 */
@@ -274,6 +312,18 @@ int main(void)
   // Buradan sonrası sadece bekleme; Memory Window'dan
   // img_in, img_eq, img_low, img_high, img_med,
   // hist_orig ve hist_eq dizilerini inceleyebilirsin.
+
+  uint8_t *images_to_send[] = {img_in, img_eq, img_low, img_high, img_med};
+
+  // 2. Döngüyü 5 resim için ayarla
+  for (int i = 0; i < 5; i++) {
+      // Python tarafı 'timestamp' ile dosya kaydediyor, sırasıyla 5 dosya oluşacak.
+      SERIAL_SendImage(MCU_WRITES, IMG_H, IMG_W, IMAGE_FORMAT_GRAYSCALE, images_to_send[i], IMG_SIZE);
+
+      // Python'un dosyayı yazıp tekrar dinlemeye geçmesi için biraz süre tanı
+      HAL_Delay(1000);
+  }
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -350,7 +400,7 @@ static void MX_USART2_UART_Init(void)
 
   /* USER CODE END USART2_Init 1 */
   huart2.Instance = USART2;
-  huart2.Init.BaudRate = 115200;
+  huart2.Init.BaudRate = 2000000;
   huart2.Init.WordLength = UART_WORDLENGTH_8B;
   huart2.Init.StopBits = UART_STOPBITS_1;
   huart2.Init.Parity = UART_PARITY_NONE;
