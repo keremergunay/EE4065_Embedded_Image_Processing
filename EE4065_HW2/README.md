@@ -53,7 +53,7 @@ The algorithm calculates the Cumulative Distribution Function (CDF) of the origi
 #### Visual Comparison
 | Original Image (`img_in`) | Equalized Image (`img_eq`) |
 | :---: | :---: |
-| ![Original Image](/Images/img_in.png) | ![Equalized Image](EE4065_HW2/Images/img_eq.png) |
+| ![Original Image](Images/img_in.png) | ![Equalized Image](EE4065_HW2/Images/img_eq.png) |
 *(Note: Images retrieved via Serial Protocol)*
 
 ### Memory Browser Verification
