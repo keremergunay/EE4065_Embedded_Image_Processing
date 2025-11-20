@@ -32,7 +32,7 @@ A grayscale image was converted into a C header file and imported into the STM32
 ### Memory Browser Verification
 The calculated histogram values stored in the memory can be seen below:
 
-![Histogram Memory Browser](calc_histogram.png)
+![Histogram Memory Browser](EE4065_HW2/Memory Shots/calc_histogram.png)
 *(Figure: Memory Browser view of the `hist_orig` array)*
 
 ---
@@ -45,7 +45,7 @@ The mathematical derivation of the histogram equalization method (Transformation
 
 | Page 1 | Page 2 |
 | :---: | :---: |
-| ![Derivation Part 1](1.jpg) | ![Derivation Part 2](2.jpg) |
+| ![Derivation Part 1](Images/1.jpg) | ![Derivation Part 2](Images/2.jpg) |
 
 ### B. Implementation & Results
 The algorithm calculates the Cumulative Distribution Function (CDF) of the original histogram and maps the pixel values to new values to achieve a uniform histogram distribution.
@@ -53,7 +53,7 @@ The algorithm calculates the Cumulative Distribution Function (CDF) of the origi
 #### Visual Comparison
 | Original Image (`img_in`) | Equalized Image (`img_eq`) |
 | :---: | :---: |
-| ![Original Image](img_in.png) | ![Equalized Image](img_eq.png) |
+| ![Original Image](Images/img_in.png) | ![Equalized Image](Images/img_eq.png) |
 *(Note: Images retrieved via Serial Protocol)*
 
 ### Memory Browser Verification
@@ -73,7 +73,7 @@ The updated histogram entries after equalization:
 #### Visual Comparison
 | Original Image (`img_in`) | Low Pass Filtered (`img_low`) |
 | :---: | :---: |
-| ![Original Image](img_in.png) | ![Low Pass Image](img_low.png) |
+| ![Original Image](Images/img_in.png) | ![Low Pass Image](Images/img_low.png) |
 
 ### High Pass Filter
 **Kernel Used:** A 3x3 Laplacian-style kernel. This filter emphasizes edges and fine details in the image.
@@ -81,7 +81,7 @@ The updated histogram entries after equalization:
 #### Visual Comparison
 | Original Image (`img_in`) | High Pass Filtered (`img_high`) |
 | :---: | :---: |
-| ![Original Image](img_in.png) | ![High Pass Image](img_high.png) |
+| ![Original Image](Images/img_in.png) | ![High Pass Image](Images/img_high.png) |
 
 ### Memory Browser Verification
 Below are the memory views for the processed image buffers:
@@ -101,7 +101,7 @@ A 3x3 sliding window moves across the image. For each window, the 9 pixel values
 #### Visual Comparison
 | Original Image (`img_in`) | Median Filtered (`img_med`) |
 | :---: | :---: |
-| ![Original Image](img_in.png) | ![Median Image](img_med.png) |
+| ![Original Image](Images/img_in.png) | ![Median Image](Images/img_med.png) |
 
 ### Memory Browser Verification
 The memory content of the median filtered image buffer:
