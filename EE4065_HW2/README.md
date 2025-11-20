@@ -32,7 +32,7 @@ A grayscale image was converted into a C header file and imported into the STM32
 ### Memory Browser Verification
 The calculated histogram values stored in the memory can be seen below:
 
-![Histogram Memory Browser](calc_histogram.png)
+![Histogram Memory Browser](Memory Shots/calc_histogram.png)
 *(Figure: Memory Browser view of the `hist_orig` array)*
 
 ---
