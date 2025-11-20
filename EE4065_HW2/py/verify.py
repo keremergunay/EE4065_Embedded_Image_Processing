@@ -1,121 +1,168 @@
 import numpy as np
-import re
+import serial
+import msvcrt
+import cv2
+import time
 
-IMG_W = 160
-IMG_H = 120
-IMG_SIZE = IMG_W * IMG_H
+# -----------------------------
+# PROTOKOL SABİTLERİ
+# -----------------------------
+MCU_WRITES = 87   # 'W'
+MCU_READS  = 82   # 'R'
 
-def load_header_image(path):
-    with open(path, "r") as f:
-        txt = f.read()
-    m = re.search(r"\{([^}]*)\}", txt, re.S)
-    if not m:
-        raise ValueError("Header içinde { ... } kısmı bulunamadı.")
-    body = m.group(1)
-    nums = re.findall(r"0x[0-9A-Fa-f]+|\d+", body)
-    data = [int(x, 16) if x.lower().startswith("0x") else int(x) for x in nums]
-    arr = np.array(data, dtype=np.uint8)
-    if arr.size != IMG_SIZE:
-        raise ValueError(f"Boyut uyuşmuyor: {arr.size} != {IMG_SIZE}")
-    return arr
+rqTypeText = {
+    MCU_WRITES: "MCU -> PC (Image Send)",
+    MCU_READS : "PC -> MCU (Image Request)"
+}
 
-def calc_histogram(img):
-    hist = np.bincount(img.astype(np.int32), minlength=256).astype(np.uint32)
-    return hist
+formatText = {
+    1: "Grayscale",
+    2: "RGB565",
+    3: "RGB888",
+}
 
-def hist_equalize(inImg):
-    size = inImg.size
-    hist_in = calc_histogram(inImg)
-    cdf = np.cumsum(hist_in, dtype=np.uint32)
-    lut = np.zeros(256, dtype=np.uint8)
-    for i in range(256):
-        num = cdf[i] * 255 + (size // 2)
-        lut[i] = (num // size).astype(np.uint8)
-    out = lut[inImg]
-    hist_out = calc_histogram(out)
-    return out, hist_in, hist_out
+IMAGE_FORMAT_GRAYSCALE = 1
+IMAGE_FORMAT_RGB565    = 2
+IMAGE_FORMAT_RGB888    = 3
 
-def conv3x3(inImg, kernel, divisor):
-    w, h = IMG_W, IMG_H
-    inp = inImg.reshape((h, w)).astype(np.int32)
-    out = np.zeros_like(inp, dtype=np.int32)
+# -----------------------------
+# SERIAL INIT
+# -----------------------------
+def SERIAL_Init(port):
+    global __serial
+    __serial = serial.Serial(port, 2000000, timeout=10)
+    __serial.flush()
+    print(f"{__serial.name} Opened\n")
 
-    # kenarları input’tan kopyala
-    out[0, :] = inp[0, :]
-    out[h-1, :] = inp[h-1, :]
-    out[:, 0] = inp[:, 0]
-    out[:, w-1] = inp[:, w-1]
 
-    for y in range(1, h-1):
-        for x in range(1, w-1):
-            s = 0
-            for ky in range(-1, 2):
-                for kx in range(-1, 2):
-                    s += inp[y+ky, x+kx] * kernel[ky+1][kx+1]
-            if divisor != 0:
-                s //= divisor
-            if s < 0:
-                s = 0
-            if s > 255:
-                s = 255
-            out[y, x] = s
+# -----------------------------
+# MCU'DAN REQUEST BEKLEME
+# -----------------------------
+def SERIAL_IMG_PollForRequest():
+    global requestType, height, width, format, imgSize
 
-    return out.astype(np.uint8).reshape(-1)
+    while True:
+        if msvcrt.kbhit() and msvcrt.getch() == chr(27).encode():
+            print("Exit program!")
+            exit(0)
 
-def low_pass_filter(inImg):
-    k = np.array([[1, 1, 1],
-                  [1, 1, 1],
-                  [1, 1, 1]], dtype=np.int32)
-    return conv3x3(inImg, k, 9)
+        # Başlangıç byte'ını oku
+        b1 = __serial.read(1)
+        if len(b1) > 0 and np.frombuffer(b1, dtype=np.uint8)[0] == 83: # 'S'
+            b2 = __serial.read(1)
+            if len(b2) > 0 and np.frombuffer(b2, dtype=np.uint8)[0] == 84: # 'T'
 
-def high_pass_filter(inImg):
-    k = np.array([[ 0, -1,  0],
-                  [-1,  4, -1],
-                  [ 0, -1,  0]], dtype=np.int32)
-    return conv3x3(inImg, k, 1)
+                # NumPy uyarısını düzeltmek için [0] ekledik (Dizi -> Skaler)
+                requestType = int(np.frombuffer(__serial.read(1), dtype=np.uint8)[0])
+                height      = int(np.frombuffer(__serial.read(2), dtype=np.uint16)[0])
+                width       = int(np.frombuffer(__serial.read(2), dtype=np.uint16)[0])
+                format      = int(np.frombuffer(__serial.read(1), dtype=np.uint8)[0])
 
-def median_filter3x3(inImg):
-    w, h = IMG_W, IMG_H
-    inp = inImg.reshape((h, w))
-    out = np.zeros_like(inp, dtype=np.uint8)
+                imgSize = height * width * format # Grayscale için format=1
 
-    out[0, :] = inp[0, :]
-    out[h-1, :] = inp[h-1, :]
-    out[:, 0] = inp[:, 0]
-    out[:, w-1] = inp[:, w-1]
+                print("======= REQUEST DETECTED =======")
+                print("Request Type :", rqTypeText.get(requestType, "Unknown"))
+                print(f"Size         : {width}x{height}")
+                print("================================\n")
 
-    win = np.zeros(9, dtype=np.uint8)
-    for y in range(1, h-1):
-        for x in range(1, w-1):
-            k = 0
-            for ky in range(-1, 2):
-                for kx in range(-1, 2):
-                    win[k] = inp[y+ky, x+kx]
-                    k += 1
-            win_sorted = np.sort(win)
-            out[y, x] = win_sorted[4]
+                return [requestType, height, width, format]
 
-    return out.reshape(-1)
+# -----------------------------
+# MCU → PC IMAGE (READ)
+# -----------------------------
+def SERIAL_IMG_Read():
+    # Tamponu temizlemeden önce veriyi tam okumaya çalışalım
+    # serial.read() bazen timeout yüzünden eksik dönebilir, bunu garantiye alalım:
+    data = b''
+    remaining = imgSize
+    
+    start_time = time.time()
+    while remaining > 0:
+        chunk = __serial.read(remaining)
+        if len(chunk) > 0:
+            data += chunk
+            remaining -= len(chunk)
+        
+        # 10 saniye içinde veri gelmezse döngüyü kır (Sonsuz döngüden kaçış)
+        if (time.time() - start_time) > 10:
+            print("Zaman aşımı! Veri eksik geldi.")
+            break
 
+    if len(data) != imgSize:
+        print(f"HATA: Beklenen {imgSize} byte, alınan {len(data)} byte.")
+        return None
+
+    img = np.frombuffer(data, dtype=np.uint8)
+    
+    # Şekillendirme hatası almamak için boyut kontrolü
+    try:
+        img = np.reshape(img, (height, width, format))
+    except ValueError as e:
+        print(f"Reshape Hatası: {e}")
+        return None
+
+    # Format dönüştürme (Görüntüleme için)
+    display_img = img
+    if format == IMAGE_FORMAT_GRAYSCALE:
+        display_img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
+    
+    timestamp = time.strftime('%Y_%m_%d_%H%M%S', time.localtime())
+    filename = f"received_{timestamp}.png"
+    cv2.imwrite(filename, display_img)
+    print(f"[+] Image saved as: {filename}")
+
+    cv2.imshow("Received", display_img)
+    
+    # KRİTİK NOKTA: Bekleme süresini kısalttık. 
+    # 1ms bekler, pencereyi günceller ve hemen yeni veri dinlemeye döner.
+    cv2.waitKey(1) 
+    
+    # destroyAllWindows() kaldırdık çünkü döngüde sürekli pencere aç-kapa yavaşlatır.
+
+    return img
+
+# -----------------------------
+# PC → MCU IMAGE (WRITE)
+# -----------------------------
+def SERIAL_IMG_Write(path):
+    img = cv2.imread(path)
+
+    # MCU'nun istediği boyuta RESIZE
+    img = cv2.resize(img, (width, height))
+
+    # Format dönüştürme
+    if format == IMAGE_FORMAT_GRAYSCALE:
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+
+    elif format == IMAGE_FORMAT_RGB565:
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2BGR565)
+
+    __serial.write(img.tobytes())
+    print("[+] Image sent to MCU.")
+
+
+# ======================================================
+# ANA PROGRAM
+# ======================================================
 if __name__ == "__main__":
-    # 1) header’dan resmi al
-    img_in = load_header_image("C:\Users\Tarık\STM32CubeIDE\workspace2\HW2\Core\Inc\mandrill.h")  # gerekirse dosya adını değiştir
 
-    # 2) histogram + equalization
-    img_eq, hist_orig, hist_eq = hist_equalize(img_in)
+    COM_PORT = "COM5"        # ← Kerem, senin F446RE için COM8 doğru
+    TEST_IMAGE = "mandrill.png"
 
-    # 3) low / high / median filtreler
-    img_low  = low_pass_filter(img_in)
-    img_high = high_pass_filter(img_in)
-    img_med  = median_filter3x3(img_in)
+    print(f"Seri port {COM_PORT} başlatılıyor...\n")
+    SERIAL_Init(COM_PORT)
+    print("Port başlatıldı.")
 
-    # 4) Örnek karşılaştırma için birkaç index
-    idxs = [0, 123, 5000, 10000, 19199]
-    print("Index | in  eq  low  high  med")
-    for i in idxs:
-        print(f"{i:5d} | {img_in[i]:3d} {img_eq[i]:3d} {img_low[i]:3d} {img_high[i]:4d} {img_med[i]:4d}")
+    while True:
+        print("\nSTM32'den istek bekleniyor (PollForRequest)...")
+        rqType, height, width, format = SERIAL_IMG_PollForRequest()
 
-    # Histogramdan birkaç örnek
-    print("\nHistogram örnekleri (orig / eq):")
-    for g in [0, 10, 50, 100, 150, 200, 250]:
-        print(f"g={g:3d}: orig={hist_orig[g]}, eq={hist_eq[g]}")
+        # MCU → PC (F446RE görüntü yolluyor)
+        if rqType == MCU_WRITES:
+            print("MCU görüntü gönderiyor, alınıyor...")
+            SERIAL_IMG_Read()
+
+        # PC → MCU (F446RE görüntü istiyor)
+        elif rqType == MCU_READS:
+            print("MCU görüntü istiyor, gönderiliyor...")
+            SERIAL_IMG_Write(TEST_IMAGE)
