@@ -32,7 +32,7 @@ A grayscale image was converted into a C header file and imported into the STM32
 ### Memory Browser Verification
 The calculated histogram values stored in the memory can be seen below:
 
-![Histogram Memory Browser](EE4065_HW2/Memory Shots/calc_histogram.png)
+![Histogram Memory Browser](Memory_Shots/calc_histogram.png)
 *(Figure: Memory Browser view of the `hist_orig` array)*
 
 ---
@@ -59,7 +59,7 @@ The algorithm calculates the Cumulative Distribution Function (CDF) of the origi
 ### Memory Browser Verification
 The updated histogram entries after equalization:
 
-![Histogram Equalization Memory Browser](hist_equalize.png)
+![Histogram Equalization Memory Browser](Memory_Shots/hist_equalize.png)
 *(Figure: Memory Browser view of the `hist_eq` array)*
 
 ---
@@ -88,7 +88,7 @@ Below are the memory views for the processed image buffers:
 
 | Low Pass Buffer | High Pass Buffer |
 | :---: | :---: |
-| ![Low Pass Memory](low_pass_filter.png) | ![High Pass Memory](high_pass_filter.png) |
+| ![Low Pass Memory](Memory_Shots/low_pass_filter.png) | ![High Pass Memory](Memory_Shots/high_pass_filter.png) |
 
 ---
 
@@ -106,7 +106,7 @@ A 3x3 sliding window moves across the image. For each window, the 9 pixel values
 ### Memory Browser Verification
 The memory content of the median filtered image buffer:
 
-![Median Filter Memory](median_filter3x3.png)
+![Median Filter Memory](Memory_Shots/median_filter3x3.png)
 *(Figure: Memory Browser view of the `img_med` array)*
 
 ---
