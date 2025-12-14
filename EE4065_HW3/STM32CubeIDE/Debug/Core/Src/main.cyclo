@@ -1,0 +1,12 @@
+../Core/Src/main.c:75:6:erosion	9
+../Core/Src/main.c:107:6:dilation	9
+../Core/Src/main.c:138:6:opening	1
+../Core/Src/main.c:147:6:closing	1
+../Core/Src/main.c:155:6:otsu_gray_process	9
+../Core/Src/main.c:201:5:calculate_single_channel_otsu	7
+../Core/Src/main.c:236:6:process_color_otsu	5
+../Core/Src/main.c:264:5:main	10
+../Core/Src/main.c:376:6:SystemClock_Config	3
+../Core/Src/main.c:424:13:MX_USART2_UART_Init	2
+../Core/Src/main.c:457:13:MX_GPIO_Init	1
+../Core/Src/main.c:499:6:Error_Handler	1
