@@ -75,8 +75,15 @@ All functions operate on the `binary_image` (Q1 result) and output to `morph_res
 <img width="1000" height="500" alt="image" src="https://github.com/user-attachments/assets/46f62eb2-cced-40b1-bec4-9795e0cb6530" />
 
 *   **Dilation (Command '5'):** Pixel is White (255) if **ANY** pixel in the 3x3 neighborhood is White.
+    <img width="1000" height="500" alt="image" src="https://github.com/user-attachments/assets/c1321cf1-b3e8-4108-bce3-35d2aec2bf77" />
+
+  
 *   **Opening (Command '6'):** Erosion followed by Dilation. Useful for removing small noise.
+  <img width="1000" height="500" alt="image" src="https://github.com/user-attachments/assets/0963c5d4-2e0f-46e9-95e8-191bc6c7c183" />
+
 *   **Closing (Command '7'):** Dilation followed by Erosion. Useful for filling small holes.
+  <img width="1000" height="500" alt="image" src="https://github.com/user-attachments/assets/d208ee10-8c46-4a67-94b7-392b92aa5fbf" />
+
 
 ### 🔹 Verification
 The Python script provides a menu to select these operations. It first ensures Q1 has been run (to populate the binary image in STM32 memory), then sends the corresponding command code ('4', '5', '6', or '7') and visualizes the returned result.
@@ -102,6 +109,7 @@ q. Exit
 1.  **Grayscale Otsu:** User calculates the binary version of the hardcoded `mandrill` image.
 2.  **Color Otsu:** User verifies the system can handle dynamic image data transfer and multi-channel processing.
 3.  **Morphology:** User observes the effects of erosion/dilation on the binary features extracted in Q1.
+
 
 
 
