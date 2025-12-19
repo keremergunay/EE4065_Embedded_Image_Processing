@@ -42,7 +42,7 @@ The function `otsu_gray_process` in `main.c` performs the following steps:
 *   Receives the processed binary image (160x120 bytes) via UART.
 *   Displays the result using Matplotlib.
 
-https://github.com/keremergunay/EE4065_Embedded_Image_Processing/blob/main/EE4065_HW3/Images/Otsu%20Threshold%20(Grayscale).png?raw=true<img width="640" height="480" alt="image" src="https://github.com/user-attachments/assets/7f1621d2-055a-41a0-96c7-202ef5dc59eb" />
+<img width="640" height="480" alt="image" src="https://github.com/user-attachments/assets/7f1621d2-055a-41a0-96c7-202ef5dc59eb" />
 
 
 ---
@@ -61,7 +61,7 @@ Since the color image is large (160x120x3 bytes), a specific handshake protocol 
 4.  **Complete:** STM32 sends `'D'` (Done) when finished.
 5.  **Retrieve:** Python sends command `'3'` to request the result and displays the segmented color image.
 
-https://github.com/keremergunay/EE4065_Embedded_Image_Processing/blob/main/EE4065_HW3/Images/Color%20Otsu%20(RGB).png?raw=true<img width="1000" height="500" alt="image" src="https://github.com/user-attachments/assets/416514b4-e196-4ad9-8e5d-776cba1c7c1d" />
+<img width="1000" height="500" alt="image" src="https://github.com/user-attachments/assets/416514b4-e196-4ad9-8e5d-776cba1c7c1d" />
 
 ---
 
@@ -72,6 +72,8 @@ Implement four fundamental morphological operations on the binary image generate
 ### 🔹 STM32 Implementation
 All functions operate on the `binary_image` (Q1 result) and output to `morph_result`.
 *   **Erosion (Command '4'):** Pixel is White (255) only if **ALL** pixels in the 3x3 neighborhood are White. Otherwise, it becomes Black (0).
+<img width="1000" height="500" alt="image" src="https://github.com/user-attachments/assets/46f62eb2-cced-40b1-bec4-9795e0cb6530" />
+
 *   **Dilation (Command '5'):** Pixel is White (255) if **ANY** pixel in the 3x3 neighborhood is White.
 *   **Opening (Command '6'):** Erosion followed by Dilation. Useful for removing small noise.
 *   **Closing (Command '7'):** Dilation followed by Erosion. Useful for filling small holes.
@@ -100,6 +102,7 @@ q. Exit
 1.  **Grayscale Otsu:** User calculates the binary version of the hardcoded `mandrill` image.
 2.  **Color Otsu:** User verifies the system can handle dynamic image data transfer and multi-channel processing.
 3.  **Morphology:** User observes the effects of erosion/dilation on the binary features extracted in Q1.
+
 
 
 
