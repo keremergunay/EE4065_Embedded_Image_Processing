@@ -42,11 +42,7 @@ The function `otsu_gray_process` in `main.c` performs the following steps:
 *   Receives the processed binary image (160x120 bytes) via UART.
 *   Displays the result using Matplotlib.
 
-### 🔹 Memory Observation (Q1)
-To verify the operation on the microcontroller side, observe the **`binary_image`** array in the STM32CubeIDE Memory Window.
-*   **Address:** (Check in "Expressions" tab)
-*   **Format:** 8-bit integers (0x00 or 0xFF)
-![Memory View - Q1 Binary Image](PLACEHOLDER_IMAGE_PATH_HERE)
+
 
 ---
 
@@ -64,10 +60,6 @@ Since the color image is large (160x120x3 bytes), a specific handshake protocol 
 4.  **Complete:** STM32 sends `'D'` (Done) when finished.
 5.  **Retrieve:** Python sends command `'3'` to request the result and displays the segmented color image.
 
-### 🔹 Memory Observation (Q2)
-Observe the **`rgb_image`** array in RAM. This buffer contains the raw RGB bytes (Sequence: R, G, B, R, G, B...).
-*   **After Processing:** The values should be thresholded (0x00 or 0xFF).
-![Memory View - Q2 Color Image](PLACEHOLDER_IMAGE_PATH_HERE)
 
 ---
 
@@ -85,10 +77,6 @@ All functions operate on the `binary_image` (Q1 result) and output to `morph_res
 ### 🔹 Verification
 The Python script provides a menu to select these operations. It first ensures Q1 has been run (to populate the binary image in STM32 memory), then sends the corresponding command code ('4', '5', '6', or '7') and visualizes the returned result.
 
-### 🔹 Memory Observation (Q3)
-Observe the **`morph_result`** array.
-*   The content will change based on the selected operation (Erosion, Dilation, etc.).
-![Memory View - Q3 Morphology](PLACEHOLDER_IMAGE_PATH_HERE)
 
 ---
 
@@ -110,3 +98,4 @@ q. Exit
 1.  **Grayscale Otsu:** User calculates the binary version of the hardcoded `mandrill` image.
 2.  **Color Otsu:** User verifies the system can handle dynamic image data transfer and multi-channel processing.
 3.  **Morphology:** User observes the effects of erosion/dilation on the binary features extracted in Q1.
+
