@@ -61,6 +61,7 @@ Since the color image is large (160x120x3 bytes), a specific handshake protocol 
 4.  **Complete:** STM32 sends `'D'` (Done) when finished.
 5.  **Retrieve:** Python sends command `'3'` to request the result and displays the segmented color image.
 
+https://github.com/keremergunay/EE4065_Embedded_Image_Processing/blob/main/EE4065_HW3/Images/Color%20Otsu%20(RGB).png?raw=true<img width="1000" height="500" alt="image" src="https://github.com/user-attachments/assets/416514b4-e196-4ad9-8e5d-776cba1c7c1d" />
 
 ---
 
@@ -99,5 +100,6 @@ q. Exit
 1.  **Grayscale Otsu:** User calculates the binary version of the hardcoded `mandrill` image.
 2.  **Color Otsu:** User verifies the system can handle dynamic image data transfer and multi-channel processing.
 3.  **Morphology:** User observes the effects of erosion/dilation on the binary features extracted in Q1.
+
 
 
