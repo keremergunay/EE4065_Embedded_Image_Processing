@@ -93,6 +93,7 @@ model.fit(
 The confusion matrix shows the classification performance on the test set (10,000 images):
 
 ![Single Neuron Confusion Matrix](Images/Single_Neuron_Classifier_Confusion_Matrix_10_9.png)
+
 *(Figure: Confusion matrix for the Single Neuron Classifier - Binary classification: "0" vs "non-0")*
 
 ### Prediction & Evaluation
@@ -165,6 +166,7 @@ where $p_{y_i}$ is the predicted probability for the true class.
 The confusion matrix shows the classification performance across all 10 digit classes:
 
 ![Neural Network Confusion Matrix](Images/Single_Neuron_Classifier_Confusion_Matrix_11_8.png)
+
 *(Figure: Confusion matrix for the MLP Classifier - Multi-class classification: digits 0-9)*
 
 ### Prediction & Evaluation
