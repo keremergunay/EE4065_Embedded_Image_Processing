@@ -496,7 +496,7 @@ huart2.Init.HwFlowCtl = UART_HWCONTROL_NONE;
 ```
 HW_5/
 ├── README.md                          # This report
-├── EE4065_Homework_5.pdf              # Assignment document
+│
 │
 ├── Python/                            # Python scripts
 │   ├── Q1_keyword_spotting.py         # Q1: KWS training script
