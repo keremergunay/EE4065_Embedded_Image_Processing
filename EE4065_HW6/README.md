@@ -382,29 +382,37 @@ The Python script provides:
 #### SqueezeNetMini Results
 
 **Option 1: Single Image Test**
+
 ![SqueezeNet Option 1](Images/SqueezeNet_option1.png)
 
 **Option 2: Batch Test (10 samples)**
+
 ![SqueezeNet Option 2](Images/SqueezeNet_option2.png)
 
 **Option 3: Batch Test (Custom count)**
+
 ![SqueezeNet Option 3](Images/SqueezeNet_option3.png)
 
 **Option 4: Specific Digit Test**
+
 ![SqueezeNet Option 4](Images/SqueezeNet_option4.png)
 
 #### MobileNetV2Mini Results
 
 **Option 1: Single Image Test**
+
 ![MobileNetV2Mini Option 1](Images/MobileNetV2Mini_option1.png)
 
 **Option 2: Batch Test (10 samples)**
+
 ![MobileNetV2Mini Option 2](Images/MobileNetV2Mini_option2.png)
 
 **Option 3: Batch Test (Custom count)**
+
 ![MobileNetV2Mini Option 3](Images/MobileNetV2Mini_option3.png)
 
 **Option 4: Specific Digit Test**
+
 ![MobileNetV2Mini Option 4](Images/MobileNetV2Mini_option4.png)
 
 ### Performance Summary
