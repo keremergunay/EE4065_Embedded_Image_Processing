@@ -1,0 +1,9 @@
+C:/Users/Kerem/STM32CubeIDE/workspace_1.19.0/HW6/tensorflow/lite/kernels/internal/runtime_shape.h:67:11:int32_t tflite::RuntimeShape::Dims(int) const	2
+C:/Users/Kerem/STM32CubeIDE/workspace_1.19.0/HW6/tensorflow/lite/kernels/internal/runtime_shape.h:133:12:int tflite::Offset(const RuntimeShape&, int, int, int, int)	17
+C:/Users/Kerem/STM32CubeIDE/workspace_1.19.0/HW6/tensorflow/lite/kernels/internal/types.h:264:12:int tflite::MatchingDim(const RuntimeShape&, int, const RuntimeShape&, int)	1
+C:/Users/Kerem/STM32CubeIDE/workspace_1.19.0/HW6/tensorflow/lite/kernels/internal/reference/pooling.h:196:13:void tflite::reference_ops::MaxPool(const tflite::PoolParams&, const tflite::RuntimeShape&, const float*, const tflite::RuntimeShape&, float*)	8
+C:/Users/Kerem/STM32CubeIDE/workspace_1.19.0/HW6/tensorflow/lite/kernels/padding.h:44:12:int tflite::ComputeOutSize(TfLitePadding, int, int, int, int)	4
+../tensorflow/lite/micro/kernels/pooling_common.cc:30:14:TfLiteStatus tflite::CalculateOpDataPooling(const TfLiteContext*, const TfLitePoolParams*, const TfLiteTensor*, const TfLiteTensor*, OpDataPooling*)	1
+../tensorflow/lite/micro/kernels/pooling_common.cc:50:14:TfLiteStatus tflite::PoolingPrepare(TfLiteContext*, TfLiteNode*)	11
+../tensorflow/lite/micro/kernels/pooling_common.cc:88:6:void tflite::AveragePoolingEvalFloat(const TfLiteContext*, const TfLiteNode*, const TfLitePoolParams*, const OpDataPooling*, const TfLiteEvalTensor*, TfLiteEvalTensor*)	11
+../tensorflow/lite/micro/kernels/pooling_common.cc:109:6:void tflite::MaxPoolingEvalFloat(TfLiteContext*, TfLiteNode*, TfLitePoolParams*, const OpDataPooling*, const TfLiteEvalTensor*, TfLiteEvalTensor*)	2

@@ -1,0 +1,5 @@
+../tensorflow/lite/micro/kernels/batch_to_space_nd.cc:41:14:TfLiteStatus tflite::{anonymous}::Prepare(TfLiteContext*, TfLiteNode*)	12
+C:/Users/Kerem/STM32CubeIDE/workspace_1.19.0/HW6/tensorflow/lite/kernels/internal/runtime_shape.h:133:12:int tflite::Offset(const RuntimeShape&, int, int, int, int)	17
+C:/Users/Kerem/STM32CubeIDE/workspace_1.19.0/HW6/tensorflow/lite/kernels/internal/reference/batch_to_space_nd.h:27:21:tflite::RuntimeShape tflite::reference_ops::ExtendShapeBatchToSpace(const tflite::RuntimeShape&)	4
+../tensorflow/lite/micro/kernels/batch_to_space_nd.cc:65:14:TfLiteStatus tflite::{anonymous}::Eval(TfLiteContext*, TfLiteNode*)	32
+../tensorflow/lite/micro/kernels/batch_to_space_nd.cc:108:18:TFLMRegistration tflite::Register_BATCH_TO_SPACE_ND()	1

@@ -1,0 +1,9 @@
+../tensorflow/lite/micro/kernels/fully_connected.cc:29:7:void* tflite::{anonymous}::Init(TfLiteContext*, const char*, size_t)	1
+C:/Users/Kerem/STM32CubeIDE/workspace_1.19.0/HW6/tensorflow/lite/kernels/internal/runtime_shape.h:67:11:int32_t tflite::RuntimeShape::Dims(int) const	2
+C:/Users/Kerem/STM32CubeIDE/workspace_1.19.0/HW6/tensorflow/lite/kernels/internal/runtime_shape.h:96:7:int tflite::RuntimeShape::FlatSize() const	2
+../tensorflow/lite/micro/kernels/fully_connected.cc:35:14:TfLiteStatus tflite::{anonymous}::Prepare(TfLiteContext*, TfLiteNode*)	17
+C:/Users/Kerem/STM32CubeIDE/workspace_1.19.0/HW6/tensorflow/lite/kernels/internal/types.h:519:12:int tflite::FlatSizeSkipDim(const RuntimeShape&, int)	4
+C:/Users/Kerem/STM32CubeIDE/workspace_1.19.0/HW6/tensorflow/lite/kernels/internal/reference/integer_ops/fully_connected.h:77:6:void tflite::reference_integer_ops::FullyConnected(const tflite::FullyConnectedParams&, const tflite::RuntimeShape&, const InputType*, const tflite::RuntimeShape&, const WeightType*, const tflite::RuntimeShape&, const BiasType*, const tflite::RuntimeShape&, OutputType*) [with InputType = signed char; WeightType = signed char; OutputType = signed char; BiasType = long int]	8
+../tensorflow/lite/micro/kernels/fully_connected.cc:90:14:TfLiteStatus tflite::{anonymous}::Eval(TfLiteContext*, TfLiteNode*)	30
+../tensorflow/lite/micro/kernels/fully_connected.cc:202:18:TFLMRegistration tflite::Register_FULLY_CONNECTED()	1
+../tensorflow/lite/micro/kernels/fully_connected.cc:206:27:TFLMInferenceRegistration tflite::RegisterInference_FULLY_CONNECTED()	1

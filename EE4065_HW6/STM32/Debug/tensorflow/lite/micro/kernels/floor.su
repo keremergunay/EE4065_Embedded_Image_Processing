@@ -1,0 +1,3 @@
+C:/Users/Kerem/STM32CubeIDE/workspace_1.19.0/HW6/tensorflow/lite/kernels/internal/reference/floor.h:26:13:void tflite::reference_ops::Floor(const tflite::RuntimeShape&, const float*, const tflite::RuntimeShape&, float*)	24	static
+../tensorflow/lite/micro/kernels/floor.cc:29:14:TfLiteStatus tflite::{anonymous}::Eval(TfLiteContext*, TfLiteNode*)	88	static
+../tensorflow/lite/micro/kernels/floor.cc:44:18:TFLMRegistration tflite::Register_FLOOR()	16	static

@@ -1,0 +1,10 @@
+../tensorflow/lite/micro/kernels/pooling.cc:94:7:void* tflite::{anonymous}::Init(TfLiteContext*, const char*, size_t)	1
+C:/Users/Kerem/STM32CubeIDE/workspace_1.19.0/HW6/tensorflow/lite/kernels/internal/runtime_shape.h:67:11:int32_t tflite::RuntimeShape::Dims(int) const	2
+C:/Users/Kerem/STM32CubeIDE/workspace_1.19.0/HW6/tensorflow/lite/kernels/internal/runtime_shape.h:133:12:int tflite::Offset(const RuntimeShape&, int, int, int, int)	17
+C:/Users/Kerem/STM32CubeIDE/workspace_1.19.0/HW6/tensorflow/lite/kernels/internal/types.h:264:12:int tflite::MatchingDim(const RuntimeShape&, int, const RuntimeShape&, int)	1
+../tensorflow/lite/micro/kernels/pooling.cc:27:14:TfLiteStatus tflite::{anonymous}::AverageEval(TfLiteContext*, TfLiteNode*)	29
+C:/Users/Kerem/STM32CubeIDE/workspace_1.19.0/HW6/tensorflow/lite/kernels/internal/reference/integer_ops/pooling.h:86:13:void tflite::reference_integer_ops::MaxPool(const tflite::PoolParams&, const tflite::RuntimeShape&, const int8_t*, const tflite::RuntimeShape&, int8_t*)	11
+C:/Users/Kerem/STM32CubeIDE/workspace_1.19.0/HW6/tensorflow/lite/kernels/internal/reference/integer_ops/pooling.h:204:13:void tflite::reference_integer_ops::MaxPool(const tflite::PoolParams&, const tflite::RuntimeShape&, const int16_t*, const tflite::RuntimeShape&, int16_t*)	11
+../tensorflow/lite/micro/kernels/pooling.cc:61:14:TfLiteStatus tflite::{anonymous}::MaxEval(TfLiteContext*, TfLiteNode*)	7
+../tensorflow/lite/micro/kernels/pooling.cc:101:18:TFLMRegistration tflite::Register_AVERAGE_POOL_2D()	1
+../tensorflow/lite/micro/kernels/pooling.cc:105:18:TFLMRegistration tflite::Register_MAX_POOL_2D()	1

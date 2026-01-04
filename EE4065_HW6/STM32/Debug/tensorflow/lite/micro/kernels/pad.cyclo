@@ -1,0 +1,10 @@
+../tensorflow/lite/micro/kernels/pad.cc:35:7:void* tflite::{anonymous}::Init(TfLiteContext*, const char*, size_t)	1
+C:/Users/Kerem/STM32CubeIDE/workspace_1.19.0/HW6/tensorflow/lite/kernels/kernel_util.h:194:16:int64_t tflite::NumElements(const TfLiteTensor*)	3
+C:/Users/Kerem/STM32CubeIDE/workspace_1.19.0/HW6/tensorflow/lite/kernels/internal/runtime_shape.h:96:7:int tflite::RuntimeShape::FlatSize() const	2
+../tensorflow/lite/micro/kernels/pad.cc:123:14:TfLiteStatus tflite::PadPrepare(TfLiteContext*, TfLiteNode*)	32
+C:/Users/Kerem/STM32CubeIDE/workspace_1.19.0/HW6/tensorflow/lite/kernels/internal/runtime_shape.h:109:3:tflite::RuntimeShape::RuntimeShape(int, const tflite::RuntimeShape&, int)	3
+C:/Users/Kerem/STM32CubeIDE/workspace_1.19.0/HW6/tensorflow/lite/kernels/internal/reference/pad.h:38:13:void tflite::reference_ops::PadImpl(const tflite::PadParams&, const tflite::RuntimeShape&, const T*, const P*, const tflite::RuntimeShape&, T*) [with T = signed char; P = signed char]	24
+C:/Users/Kerem/STM32CubeIDE/workspace_1.19.0/HW6/tensorflow/lite/kernels/internal/reference/pad.h:38:13:void tflite::reference_ops::PadImpl(const tflite::PadParams&, const tflite::RuntimeShape&, const T*, const P*, const tflite::RuntimeShape&, T*) [with T = float; P = float]	24
+../tensorflow/lite/micro/kernels/pad.cc:40:14:TfLiteStatus tflite::{anonymous}::Eval(TfLiteContext*, TfLiteNode*)	67
+../tensorflow/lite/micro/kernels/pad.cc:220:18:TFLMRegistration tflite::Register_PAD()	1
+../tensorflow/lite/micro/kernels/pad.cc:225:18:TFLMRegistration tflite::Register_PADV2()	1

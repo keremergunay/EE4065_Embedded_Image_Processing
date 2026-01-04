@@ -1,0 +1,8 @@
+C:/Users/Kerem/STM32CubeIDE/workspace_1.19.0/HW6/tensorflow/lite/kernels/internal/runtime_shape.h:67:11:int32_t tflite::RuntimeShape::Dims(int) const	8	static
+C:/Users/Kerem/STM32CubeIDE/workspace_1.19.0/HW6/tensorflow/lite/kernels/internal/runtime_shape.h:133:12:int tflite::Offset(const RuntimeShape&, int, int, int, int)	16	static
+C:/Users/Kerem/STM32CubeIDE/workspace_1.19.0/HW6/tensorflow/lite/kernels/internal/types.h:264:12:int tflite::MatchingDim(const RuntimeShape&, int, const RuntimeShape&, int)	16	static
+C:/Users/Kerem/STM32CubeIDE/workspace_1.19.0/HW6/tensorflow/lite/kernels/internal/reference/pooling.h:142:13:void tflite::reference_ops::L2Pool(const tflite::PoolParams&, const tflite::RuntimeShape&, const float*, const tflite::RuntimeShape&, float*)	136	static
+../tensorflow/lite/micro/kernels/l2_pool_2d.cc:108:14:TfLiteStatus tflite::{anonymous}::L2Eval(TfLiteContext*, TfLiteNode*)	136	static
+C:/Users/Kerem/STM32CubeIDE/workspace_1.19.0/HW6/tensorflow/lite/kernels/padding.h:44:12:int tflite::ComputeOutSize(TfLitePadding, int, int, int, int)	8	static
+../tensorflow/lite/micro/kernels/l2_pool_2d.cc:39:14:TfLiteStatus tflite::{anonymous}::L2Prepare(TfLiteContext*, TfLiteNode*)	96	static
+../tensorflow/lite/micro/kernels/l2_pool_2d.cc:138:18:TFLMRegistration tflite::Register_L2_POOL_2D()	16	static

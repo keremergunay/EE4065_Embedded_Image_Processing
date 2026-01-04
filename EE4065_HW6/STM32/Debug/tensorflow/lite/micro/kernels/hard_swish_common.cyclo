@@ -1,0 +1,2 @@
+C:/Users/Kerem/STM32CubeIDE/workspace_1.19.0/HW6/tensorflow/lite/kernels/internal/common.h:811:13:void tflite::DownScaleInt32ToInt16Multiplier(int32_t, int16_t*)	4
+../tensorflow/lite/micro/kernels/hard_swish_common.cc:34:14:TfLiteStatus tflite::HardSwishPrepare(TfLiteContext*, TfLiteNode*)	9

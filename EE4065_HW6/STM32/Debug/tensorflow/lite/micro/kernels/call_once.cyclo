@@ -1,0 +1,4 @@
+../tensorflow/lite/micro/kernels/call_once.cc:63:14:TfLiteStatus tflite::{anonymous}::Eval(TfLiteContext*, TfLiteNode*)	3
+../tensorflow/lite/micro/kernels/call_once.cc:39:7:void* tflite::{anonymous}::Init(TfLiteContext*, const char*, size_t)	1
+../tensorflow/lite/micro/kernels/call_once.cc:44:14:TfLiteStatus tflite::{anonymous}::Prepare(TfLiteContext*, TfLiteNode*)	6
+../tensorflow/lite/micro/kernels/call_once.cc:84:18:TFLMRegistration tflite::Register_CALL_ONCE()	1

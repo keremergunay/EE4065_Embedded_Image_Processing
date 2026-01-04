@@ -1,0 +1,23 @@
+C:/Users/Kerem/STM32CubeIDE/workspace_1.19.0/HW6/tensorflow/lite/micro/micro_interpreter_graph.h:94:27:virtual tflite::MicroResourceVariables* tflite::MicroInterpreterGraph::GetResourceVariables()	0	static
+../tensorflow/lite/micro/micro_interpreter_graph.cc:53:1:tflite::MicroInterpreterGraph::~MicroInterpreterGraph()	0	static
+../tensorflow/lite/micro/micro_interpreter_graph.cc:53:1:virtual tflite::MicroInterpreterGraph::~MicroInterpreterGraph()	8	static
+../tensorflow/lite/micro/micro_interpreter_graph.cc:55:14:virtual TfLiteStatus tflite::MicroInterpreterGraph::InitSubgraphs()	40	static
+../tensorflow/lite/micro/micro_interpreter_graph.cc:117:14:virtual TfLiteStatus tflite::MicroInterpreterGraph::ResetSubgraphs()	32	static
+../tensorflow/lite/micro/micro_interpreter_graph.cc:142:14:virtual TfLiteStatus tflite::MicroInterpreterGraph::FreeSubgraphs()	32	static
+../tensorflow/lite/micro/micro_interpreter_graph.cc:30:13:const char* tflite::{anonymous}::OpNameFromRegistration(const TFLMRegistration*)	0	static
+../tensorflow/lite/micro/micro_interpreter_graph.cc:88:14:virtual TfLiteStatus tflite::MicroInterpreterGraph::PrepareSubgraphs()	48	static
+C:/Users/Kerem/STM32CubeIDE/workspace_1.19.0/HW6/third_party/flatbuffers/include/flatbuffers/table.h:35:13:flatbuffers::voffset_t flatbuffers::Table::GetOptionalFieldOffset(flatbuffers::voffset_t) const	0	static
+C:/Users/Kerem/STM32CubeIDE/workspace_1.19.0/HW6/tensorflow/lite/schema/schema_generated.h:16361:69:const flatbuffers::Vector<flatbuffers::Offset<tflite::SubGraph> >* tflite::Model::subgraphs() const	8	static
+../tensorflow/lite/micro/micro_interpreter_graph.cc:241:5:virtual int tflite::MicroInterpreterGraph::NumSubgraphs()	8	static
+C:/Users/Kerem/STM32CubeIDE/workspace_1.19.0/HW6/tensorflow/lite/micro/micro_profiler.h:126:3:tflite::ScopedMicroProfiler::~ScopedMicroProfiler()	8	static
+../tensorflow/lite/micro/micro_interpreter_graph.cc:167:14:virtual TfLiteStatus tflite::MicroInterpreterGraph::InvokeSubgraph(int)	56	static
+../tensorflow/lite/micro/micro_interpreter_graph.cc:40:1:tflite::MicroInterpreterGraph::MicroInterpreterGraph(TfLiteContext*, const tflite::Model*, tflite::MicroAllocator*, tflite::MicroResourceVariables*)	8	static
+../tensorflow/lite/micro/micro_interpreter_graph.cc:245:6:void tflite::MicroInterpreterGraph::SetSubgraphAllocations(tflite::SubgraphAllocations*)	0	static
+C:/Users/Kerem/STM32CubeIDE/workspace_1.19.0/HW6/third_party/flatbuffers/include/flatbuffers/vector.h:169:15:flatbuffers::Vector<T>::return_type flatbuffers::Vector<T>::Get(flatbuffers::uoffset_t) const [with T = long int]	8	static
+C:/Users/Kerem/STM32CubeIDE/workspace_1.19.0/HW6/third_party/flatbuffers/include/flatbuffers/vector.h:169:15:flatbuffers::Vector<T>::return_type flatbuffers::Vector<T>::Get(flatbuffers::uoffset_t) const [with T = flatbuffers::Offset<tflite::SubGraph>]	8	static
+../tensorflow/lite/micro/micro_interpreter_graph.cc:214:14:virtual TfLiteStatus tflite::MicroInterpreterGraph::ResetVariableTensors()	56	static
+C:/Users/Kerem/STM32CubeIDE/workspace_1.19.0/HW6/third_party/flatbuffers/include/flatbuffers/table.h:50:26:P flatbuffers::Table::GetPointer(flatbuffers::voffset_t) [with P = const flatbuffers::Vector<long int>*]	8	static
+../tensorflow/lite/micro/micro_interpreter_graph.cc:254:19:virtual TfLiteEvalTensor* tflite::MicroInterpreterGraph::GetSubgraphInput(int, int)	16	static
+../tensorflow/lite/micro/micro_interpreter_graph.cc:265:19:virtual TfLiteEvalTensor* tflite::MicroInterpreterGraph::GetSubgraphOutput(int, int)	16	static
+../tensorflow/lite/micro/micro_interpreter_graph.cc:250:8:virtual size_t tflite::MicroInterpreterGraph::NumSubgraphInputs(int)	8	static
+../tensorflow/lite/micro/micro_interpreter_graph.cc:261:8:virtual size_t tflite::MicroInterpreterGraph::NumSubgraphOutputs(int)	8	static

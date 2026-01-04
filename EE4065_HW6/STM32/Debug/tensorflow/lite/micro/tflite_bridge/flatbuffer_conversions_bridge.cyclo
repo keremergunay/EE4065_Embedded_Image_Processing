@@ -1,0 +1,2 @@
+../tensorflow/lite/micro/tflite_bridge/flatbuffer_conversions_bridge.cc:24:14:TfLiteStatus tflite::ConvertTensorType(TensorType, TfLiteType*)	1
+../tensorflow/lite/micro/tflite_bridge/flatbuffer_conversions_bridge.cc:28:14:TfLiteStatus tflite::CallBuiltinParseFunction(TfLiteBridgeBuiltinParseFunction, const Operator*, BuiltinDataAllocator*, void**)	1

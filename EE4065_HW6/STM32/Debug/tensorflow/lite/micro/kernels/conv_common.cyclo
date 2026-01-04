@@ -1,0 +1,6 @@
+C:/Users/Kerem/STM32CubeIDE/workspace_1.19.0/HW6/tensorflow/lite/kernels/padding.h:44:12:int tflite::ComputeOutSize(TfLitePadding, int, int, int, int)	4
+../tensorflow/lite/micro/kernels/conv_common.cc:37:12:tflite::ConvParams tflite::ConvParamsFloat(const TfLiteConvParams&, const OpDataConv&)	3
+../tensorflow/lite/micro/kernels/conv_common.cc:54:12:tflite::ConvParams tflite::ConvParamsQuantized(const TfLiteConvParams&, const OpDataConv&)	1
+../tensorflow/lite/micro/kernels/conv_common.cc:74:7:void* tflite::ConvInit(TfLiteContext*, const char*, size_t)	1
+../tensorflow/lite/micro/kernels/conv_common.cc:79:14:TfLiteStatus tflite::CalculateOpDataConv(TfLiteContext*, TfLiteNode*, const TfLiteConvParams&, int, int, int, int, int, int, TfLiteType, OpDataConv*)	9
+../tensorflow/lite/micro/kernels/conv_common.cc:138:14:TfLiteStatus tflite::ConvPrepare(TfLiteContext*, TfLiteNode*)	25

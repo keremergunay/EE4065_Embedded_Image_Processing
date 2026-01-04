@@ -1,0 +1,5 @@
+../tensorflow/lite/micro/kernels/if.cc:88:14:TfLiteStatus tflite::{anonymous}::Eval(TfLiteContext*, TfLiteNode*)	32	static
+../tensorflow/lite/micro/kernels/if.cc:41:7:void* tflite::{anonymous}::Init(TfLiteContext*, const char*, size_t)	8	static
+C:/Users/Kerem/STM32CubeIDE/workspace_1.19.0/HW6/tensorflow/lite/kernels/kernel_util.h:194:16:int64_t tflite::NumElements(const TfLiteTensor*)	32	static
+../tensorflow/lite/micro/kernels/if.cc:46:14:TfLiteStatus tflite::{anonymous}::Prepare(TfLiteContext*, TfLiteNode*)	56	static
+../tensorflow/lite/micro/kernels/if.cc:119:18:TFLMRegistration tflite::Register_IF()	16	static

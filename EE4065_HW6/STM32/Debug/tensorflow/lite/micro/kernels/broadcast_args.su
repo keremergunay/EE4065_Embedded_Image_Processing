@@ -1,0 +1,4 @@
+../tensorflow/lite/micro/kernels/broadcast_args.cc:31:14:TfLiteStatus tflite::{anonymous}::BroadcastArgsPrepare(TfLiteContext*, TfLiteNode*)	48	static
+C:/Users/Kerem/STM32CubeIDE/workspace_1.19.0/HW6/tensorflow/lite/kernels/internal/runtime_shape.h:96:7:int tflite::RuntimeShape::FlatSize() const	8	static
+../tensorflow/lite/micro/kernels/broadcast_args.cc:62:14:TfLiteStatus tflite::{anonymous}::BroadcastArgsEval(TfLiteContext*, TfLiteNode*)	200	static
+../tensorflow/lite/micro/kernels/broadcast_args.cc:86:18:TFLMRegistration tflite::Register_BROADCAST_ARGS()	16	static

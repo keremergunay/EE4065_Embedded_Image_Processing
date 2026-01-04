@@ -1,0 +1,18 @@
+../tensorflow/lite/micro/kernels/batch_matmul.cc:282:7:void* tflite::{anonymous}::Init(TfLiteContext*, const char*, size_t)	8	static
+C:/Users/Kerem/STM32CubeIDE/workspace_1.19.0/HW6/tensorflow/lite/kernels/kernel_util.h:194:16:int64_t tflite::NumElements(const TfLiteTensor*)	32	static
+../tensorflow/lite/micro/kernels/batch_matmul.cc:156:19:TfLiteEvalTensor* tflite::{anonymous}::AllocInitTransposeTensorFromTfLiteTensor(TfLiteContext*, const TfLiteTensor&)	24	static
+C:/Users/Kerem/STM32CubeIDE/workspace_1.19.0/HW6/tensorflow/lite/kernels/internal/runtime_shape.h:67:11:int32_t tflite::RuntimeShape::Dims(int) const	8	static
+C:/Users/Kerem/STM32CubeIDE/workspace_1.19.0/HW6/tensorflow/lite/kernels/internal/runtime_shape.h:72:8:void tflite::RuntimeShape::SetDim(int, int32_t)	8	static
+../tensorflow/lite/micro/kernels/batch_matmul.cc:274:14:tflite::RuntimeShape tflite::{anonymous}::SwapRowColumnDims(const tflite::RuntimeShape&)	24	static
+C:/Users/Kerem/STM32CubeIDE/workspace_1.19.0/HW6/tensorflow/lite/kernels/internal/runtime_shape.h:87:8:void tflite::RuntimeShape::ReplaceWith(int, const int32_t*)	8	static
+C:/Users/Kerem/STM32CubeIDE/workspace_1.19.0/HW6/tensorflow/lite/kernels/internal/runtime_shape.h:109:3:tflite::RuntimeShape::RuntimeShape(int, const tflite::RuntimeShape&, int)	24	static
+../tensorflow/lite/micro/kernels/batch_matmul.cc:291:14:TfLiteStatus tflite::{anonymous}::Prepare(TfLiteContext*, TfLiteNode*)	176	static
+C:/Users/Kerem/STM32CubeIDE/workspace_1.19.0/HW6/tensorflow/lite/kernels/internal/reference/batch_matmul.h:31:12:int tflite::reference_ops::batch_matmul::broadcast_dim(int, int)	8	static
+C:/Users/Kerem/STM32CubeIDE/workspace_1.19.0/HW6/tensorflow/lite/kernels/internal/reference/batch_matmul.h:40:12:int tflite::reference_ops::batch_matmul::extent(const tflite::RuntimeShape&, int)	24	static
+C:/Users/Kerem/STM32CubeIDE/workspace_1.19.0/HW6/tensorflow/lite/kernels/internal/reference/transpose.h:160:13:void tflite::reference_ops::transpose_internal::SetupTransposeStrides(std::array<int, 6>&, const int32_t*, int)	8	static
+../tensorflow/lite/micro/kernels/batch_matmul.cc:552:18:TFLMRegistration tflite::Register_BATCH_MATMUL()	16	static
+C:/Users/Kerem/STM32CubeIDE/workspace_1.19.0/HW6/tensorflow/lite/kernels/internal/reference/transpose.h:97:6:void tflite::reference_ops::transpose_internal::TransposeImpl(int, int, const int32_t*, const T*, const int*, T*, const int*, const int32_t*) [with T = long int]	64	static
+C:/Users/Kerem/STM32CubeIDE/workspace_1.19.0/HW6/tensorflow/lite/kernels/internal/reference/transpose.h:97:6:void tflite::reference_ops::transpose_internal::TransposeImpl(int, int, const int32_t*, const T*, const int*, T*, const int*, const int32_t*) [with T = signed char]	64	static
+C:/Users/Kerem/STM32CubeIDE/workspace_1.19.0/HW6/tensorflow/lite/kernels/internal/reference/transpose.h:97:6:void tflite::reference_ops::transpose_internal::TransposeImpl(int, int, const int32_t*, const T*, const int*, T*, const int*, const int32_t*) [with T = short int]	64	static
+../tensorflow/lite/micro/kernels/batch_matmul.cc:255:14:TfLiteStatus tflite::{anonymous}::TransposeRowsColumns(const TfLiteEvalTensor&, TfLiteEvalTensor*)	184	static
+../tensorflow/lite/micro/kernels/batch_matmul.cc:466:14:TfLiteStatus tflite::{anonymous}::Eval(TfLiteContext*, TfLiteNode*)	600	static

@@ -1,0 +1,21 @@
+# EE 4065 - Homework 6: Handwritten Digit Recognition
+# Python dependencies
+
+# TensorFlow for model training and conversion
+tensorflow>=2.10.0
+
+# Core scientific computing
+numpy>=1.21.0
+
+# Image processing
+opencv-python>=4.5.0
+
+# Serial communication with STM32
+pyserial>=3.5
+
+# Plotting and visualization
+matplotlib>=3.5.0
+
+# MNIST dataset (included in tensorflow.keras.datasets)
+# No separate package needed
+

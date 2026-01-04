@@ -1,0 +1,5 @@
+../tensorflow/lite/micro/kernels/depth_to_space.cc:96:14:TfLiteStatus tflite::{anonymous}::Prepare(TfLiteContext*, TfLiteNode*)	64	static
+C:/Users/Kerem/STM32CubeIDE/workspace_1.19.0/HW6/tensorflow/lite/kernels/internal/runtime_shape.h:109:3:tflite::RuntimeShape::RuntimeShape(int, const tflite::RuntimeShape&, int)	24	static
+C:/Users/Kerem/STM32CubeIDE/workspace_1.19.0/HW6/tensorflow/lite/kernels/internal/runtime_shape.h:133:12:int tflite::Offset(const RuntimeShape&, int, int, int, int)	16	static
+../tensorflow/lite/micro/kernels/depth_to_space.cc:100:14:TfLiteStatus tflite::{anonymous}::Eval(TfLiteContext*, TfLiteNode*)	288	static
+../tensorflow/lite/micro/kernels/depth_to_space.cc:138:18:TFLMRegistration tflite::Register_DEPTH_TO_SPACE()	16	static

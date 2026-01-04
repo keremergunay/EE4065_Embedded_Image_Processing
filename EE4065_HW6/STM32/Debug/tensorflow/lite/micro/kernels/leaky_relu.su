@@ -1,0 +1,6 @@
+../tensorflow/lite/micro/kernels/leaky_relu.cc:48:7:void* tflite::LeakyReluInit(TfLiteContext*, const char*, size_t)	8	static
+C:/Users/Kerem/STM32CubeIDE/workspace_1.19.0/HW6/tensorflow/lite/kernels/internal/types.h:313:12:int tflite::MatchingFlatSize(const RuntimeShape&, const RuntimeShape&)	16	static
+../tensorflow/lite/micro/kernels/leaky_relu.cc:90:18:TFLMRegistration tflite::Register_LEAKY_RELU()	16	static
+../tensorflow/lite/micro/kernels/leaky_relu.cc:30:6:void tflite::QuantizeLeakyRelu(const LeakyReluOpData&, const TfLiteEvalTensor*, TfLiteEvalTensor*) [with T = signed char]	112	static
+../tensorflow/lite/micro/kernels/leaky_relu.cc:30:6:void tflite::QuantizeLeakyRelu(const LeakyReluOpData&, const TfLiteEvalTensor*, TfLiteEvalTensor*) [with T = short int]	112	static
+../tensorflow/lite/micro/kernels/leaky_relu.cc:53:14:TfLiteStatus tflite::LeakyReluEval(TfLiteContext*, TfLiteNode*)	80	static

@@ -1,0 +1,3 @@
+../tensorflow/lite/micro/kernels/exp.cc:30:14:TfLiteStatus tflite::{anonymous}::Prepare(TfLiteContext*, TfLiteNode*)	13
+../tensorflow/lite/micro/kernels/exp.cc:54:14:TfLiteStatus tflite::{anonymous}::Eval(TfLiteContext*, TfLiteNode*)	7
+../tensorflow/lite/micro/kernels/exp.cc:75:18:TFLMRegistration tflite::Register_EXP()	1

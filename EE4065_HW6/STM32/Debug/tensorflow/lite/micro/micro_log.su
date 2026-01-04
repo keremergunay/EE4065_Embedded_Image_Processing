@@ -1,0 +1,3 @@
+../tensorflow/lite/micro/micro_log.cc:28:6:)	16	static
+../tensorflow/lite/micro/micro_log.cc:37:6:void VMicroPrintf(const char*, va_list)	8	static
+../tensorflow/lite/micro/micro_log.cc:43:6:)	16	static
