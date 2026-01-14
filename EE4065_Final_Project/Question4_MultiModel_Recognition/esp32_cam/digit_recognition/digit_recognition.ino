@@ -93,6 +93,12 @@ unsigned long last_inference_time[5];
 // Debug buffer - stores preprocessed grayscale for visualization
 uint8_t debug_image[INPUT_SIZE * INPUT_SIZE];
 
+// Preprocessing buffers in PSRAM (allocated in setup)
+#define WORK_SIZE 160
+uint8_t* preprocess_gray = nullptr;   // WORK_SIZE * WORK_SIZE
+uint8_t* preprocess_bin = nullptr;    // WORK_SIZE * WORK_SIZE  
+uint8_t* preprocess_dilated = nullptr; // WORK_SIZE * WORK_SIZE
+
 // ==================== MODEL LOADING ====================
 const unsigned char* getModelData(int model_id) {
     switch(model_id) {
@@ -239,8 +245,8 @@ bool initCamera() {
     config.xclk_freq_hz = 20000000;
     config.pixel_format = PIXFORMAT_RGB565;
     config.frame_size = FRAMESIZE_QVGA;  // 320x240
-    config.jpeg_quality = 12;
-    config.fb_count = 1;
+    config.jpeg_quality = 10;
+    config.fb_count = 2;
     config.fb_location = CAMERA_FB_IN_PSRAM;
     config.grab_mode = CAMERA_GRAB_WHEN_EMPTY;
     
@@ -254,315 +260,167 @@ bool initCamera() {
     return true;
 }
 
-// ==================== PREPROCESSING ====================
-// Optimized 8-step preprocessing for MNIST-like output
-// Changes from v1: Smaller kernel, no morphological, gentler noise removal, no final blur
+// ==================== PREPROCESSING (OPTIMIZED) ====================
+// Hybrid approach: 
+// 1. Downsample to find Bounding Box (jomjol style)
+// 2. Resize Box directly to 32x32 (zainamir style)
+// 3. Quantize
 void preprocessImage(camera_fb_t* fb, int8_t* data, int model_id) {
     uint16_t* img = (uint16_t*)fb->buf;
-    int src_w = fb->width;   // 320
-    int src_h = fb->height;  // 240
-    
+    int src_w = fb->width;
+    int src_h = fb->height;
+
     float input_scale = getInputScale(model_id);
     int input_zp = getInputZeroPoint(model_id);
+
+    // --- STEP 1: Center Crop & Downsample to 160x160 (maximum quality) ---
+    // Use PSRAM buffers (allocated in setup)
     
-    // === STEP 1: Center crop to square ===
-    int crop_size = (src_w < src_h) ? src_w : src_h;  // 240
-    int crop_x = (src_w - crop_size) / 2;  // 40
-    int crop_y = (src_h - crop_size) / 2;  // 0
-    float ratio = (float)crop_size / INPUT_SIZE;
-    
-    uint8_t gray[INPUT_SIZE * INPUT_SIZE];
+    int crop_size = (src_w < src_h) ? src_w : src_h;
+    int off_x = (src_w - crop_size) / 2;
+    int off_y = (src_h - crop_size) / 2;
+    float ratio = (float)crop_size / WORK_SIZE;
+
     uint8_t min_val = 255, max_val = 0;
-    uint32_t total_sum = 0;
     
-    // === STEP 2: Downsample with weighted area sampling ===
-    // Using ratio-proportional sampling for better quality
-    for (int y = 0; y < INPUT_SIZE; y++) {
-        for (int x = 0; x < INPUT_SIZE; x++) {
-            int sx = crop_x + (int)(x * ratio);
-            int sy = crop_y + (int)(y * ratio);
-            int sample_size = (int)(ratio + 0.5f);  // ~8 pixels
-            if (sample_size < 2) sample_size = 2;
-            if (sample_size > 8) sample_size = 8;
+    for (int y = 0; y < WORK_SIZE; y++) {
+        for (int x = 0; x < WORK_SIZE; x++) {
+            int sx = off_x + (int)(x * ratio);
+            int sy = off_y + (int)(y * ratio);
             
-            uint32_t sum = 0;
-            int cnt = 0;
-            for (int dy = 0; dy < sample_size && (sy + dy) < src_h; dy++) {
-                for (int dx = 0; dx < sample_size && (sx + dx) < src_w; dx++) {
-                    uint16_t p = img[(sy + dy) * src_w + (sx + dx)];
-                    uint8_t r = ((p >> 11) & 0x1F) << 3;
-                    uint8_t g = ((p >> 5) & 0x3F) << 2;
-                    uint8_t b = (p & 0x1F) << 3;
-                    // Luminance formula
-                    sum += (77 * r + 150 * g + 29 * b) >> 8;
-                    cnt++;
-                }
-            }
-            uint8_t val = sum / cnt;
-            gray[y * INPUT_SIZE + x] = val;
-            total_sum += val;
-            if (val < min_val) min_val = val;
-            if (val > max_val) max_val = val;
+            uint16_t p = img[sy * src_w + sx];
+            uint8_t r = (p >> 11) & 0x1F;
+            uint8_t g = (p >> 5) & 0x3F;
+            uint8_t b = p & 0x1F;
+            uint8_t gray = (r * 299 + g * 587 + b * 114 + 500) / 1000;
+            
+            preprocess_gray[y * WORK_SIZE + x] = gray;
+            if (gray < min_val) min_val = gray;
+            if (gray > max_val) max_val = gray;
         }
     }
-    
-    // === STEP 3a: Median filter for salt-pepper noise removal ===
-    // Research: Median filter preserves edges better than Gaussian for digit strokes
-    uint8_t filtered[INPUT_SIZE * INPUT_SIZE];
-    for (int y = 1; y < INPUT_SIZE - 1; y++) {
-        for (int x = 1; x < INPUT_SIZE - 1; x++) {
-            // Collect 3x3 neighborhood
-            uint8_t neighbors[9];
-            int k = 0;
-            for (int dy = -1; dy <= 1; dy++) {
-                for (int dx = -1; dx <= 1; dx++) {
-                    neighbors[k++] = gray[(y + dy) * INPUT_SIZE + (x + dx)];
-                }
-            }
-            // Simple bubble sort for 9 elements (fast enough for ESP32)
-            for (int i = 0; i < 8; i++) {
-                for (int j = i + 1; j < 9; j++) {
-                    if (neighbors[i] > neighbors[j]) {
-                        uint8_t tmp = neighbors[i];
-                        neighbors[i] = neighbors[j];
-                        neighbors[j] = tmp;
-                    }
-                }
-            }
-            filtered[y * INPUT_SIZE + x] = neighbors[4];  // Median
-        }
-    }
-    // Copy edges
-    for (int i = 0; i < INPUT_SIZE; i++) {
-        filtered[i] = gray[i];
-        filtered[(INPUT_SIZE-1)*INPUT_SIZE + i] = gray[(INPUT_SIZE-1)*INPUT_SIZE + i];
-        filtered[i*INPUT_SIZE] = gray[i*INPUT_SIZE];
-        filtered[i*INPUT_SIZE + INPUT_SIZE-1] = gray[i*INPUT_SIZE + INPUT_SIZE-1];
-    }
-    memcpy(gray, filtered, sizeof(gray));
-    
-    // Recalculate min/max after filtering
-    min_val = 255; max_val = 0;
-    for (int i = 0; i < INPUT_SIZE * INPUT_SIZE; i++) {
-        if (gray[i] < min_val) min_val = gray[i];
-        if (gray[i] > max_val) max_val = gray[i];
-    }
-    
-    // === STEP 3b: Adaptive contrast stretch ===
+
+    // --- STEP 1b: CONTRAST STRETCH ---
     int range = max_val - min_val;
+    if (range < 10) range = 10;
     
-    // Dynamic range adjustment - if low contrast, be more aggressive
-    int stretch_min = min_val;
-    int stretch_max = max_val;
-    if (range < 60) {
-        // Low contrast image - expand range centered on mean
-        uint8_t mean_val = total_sum / (INPUT_SIZE * INPUT_SIZE);
-        stretch_min = (mean_val > 40) ? mean_val - 40 : 0;
-        stretch_max = (mean_val < 215) ? mean_val + 40 : 255;
-        range = stretch_max - stretch_min;
+    for (int i = 0; i < WORK_SIZE * WORK_SIZE; i++) {
+        int stretched = ((preprocess_gray[i] - min_val) * 255) / range;
+        preprocess_gray[i] = (stretched < 0) ? 0 : (stretched > 255) ? 255 : stretched;
     }
-    if (range < 30) range = 30;  // Minimum range to avoid division issues
-    
-    for (int i = 0; i < INPUT_SIZE * INPUT_SIZE; i++) {
-        int v = ((int)(gray[i] - stretch_min) * 255) / range;
-        gray[i] = (v < 0) ? 0 : (v > 255) ? 255 : v;
+
+    // --- STEP 2: Otsu Thresholding ---
+    static int histogram[256];
+    memset(histogram, 0, sizeof(histogram));
+    for (int i = 0; i < WORK_SIZE * WORK_SIZE; i++) {
+        histogram[preprocess_gray[i]]++;
     }
-    
-    // === STEP 4: Adaptive 3x3 threshold (smaller kernel = preserves thin strokes) ===
-    uint8_t binary[INPUT_SIZE * INPUT_SIZE];
-    memset(binary, 0, sizeof(binary));
-    
-    // Dynamic threshold offset based on contrast
-    int thresh_offset = (range > 100) ? 15 : 10;  // More aggressive for high contrast
-    
-    for (int y = 1; y < INPUT_SIZE - 1; y++) {
-        for (int x = 1; x < INPUT_SIZE - 1; x++) {
-            // 3x3 local mean (smaller kernel preserves stroke edges)
-            int sum = 0;
-            for (int dy = -1; dy <= 1; dy++) {
-                for (int dx = -1; dx <= 1; dx++) {
-                    sum += gray[(y + dy) * INPUT_SIZE + (x + dx)];
-                }
-            }
-            int local_mean = sum / 9;
-            
-            // Dark pixels = digit → WHITE
-            uint8_t pix = gray[y * INPUT_SIZE + x];
-            binary[y * INPUT_SIZE + x] = (pix < local_mean - thresh_offset) ? 255 : 0;
+
+    int total = WORK_SIZE * WORK_SIZE;
+    float sum = 0;
+    for (int i = 0; i < 256; i++) sum += i * histogram[i];
+
+    float sumB = 0;
+    int wB = 0;
+    float maxVar = 0;
+    int threshold = 128;
+
+    for (int t = 0; t < 256; t++) {
+        wB += histogram[t];
+        if (wB == 0) continue;
+        int wF = total - wB;
+        if (wF == 0) break;
+
+        sumB += (float)(t * histogram[t]);
+        float mB = sumB / wB;
+        float mF = (sum - sumB) / wF;
+        float varBetween = (float)wB * (float)wF * (mB - mF) * (mB - mF);
+
+        if (varBetween > maxVar) {
+            maxVar = varBetween;
+            threshold = t;
         }
     }
+
+    // --- STEP 2b: EXTREME THRESHOLD OFFSET (sadece çok karanlık = rakam) ---
+    threshold -= 70;  // Çok çok agresif!
+    if (threshold < 10) threshold = 10;
+
+    // --- STEP 2c: Create binary mask ---
+    // preprocess_bin: 255 = digit pixel, 0 = background
+    for (int i = 0; i < WORK_SIZE * WORK_SIZE; i++) {
+        preprocess_bin[i] = (preprocess_gray[i] < threshold) ? 255 : 0;
+    }
+
+    // --- STEP 2d: DILATION (rakamları kalınlaştır, ince çizgiler korunsun) ---
+    memcpy(preprocess_dilated, preprocess_bin, WORK_SIZE * WORK_SIZE);
     
-    // === STEP 5: Gentle noise removal (ONLY isolated pixels with 0 neighbors) ===
-    // This preserves stroke endpoints which are critical for 1, 4, 7, 9
-    for (int y = 1; y < INPUT_SIZE - 1; y++) {
-        for (int x = 1; x < INPUT_SIZE - 1; x++) {
-            int idx = y * INPUT_SIZE + x;
-            if (binary[idx] > 0) {
-                int neighbors = 0;
-                // Check 8-connected
-                if (binary[(y-1)*INPUT_SIZE + (x-1)]) neighbors++;
-                if (binary[(y-1)*INPUT_SIZE + x]) neighbors++;
-                if (binary[(y-1)*INPUT_SIZE + (x+1)]) neighbors++;
-                if (binary[y*INPUT_SIZE + (x-1)]) neighbors++;
-                if (binary[y*INPUT_SIZE + (x+1)]) neighbors++;
-                if (binary[(y+1)*INPUT_SIZE + (x-1)]) neighbors++;
-                if (binary[(y+1)*INPUT_SIZE + x]) neighbors++;
-                if (binary[(y+1)*INPUT_SIZE + (x+1)]) neighbors++;
-                
-                // ONLY remove truly isolated pixels (0 neighbors)
-                // Pixels with 1 neighbor could be valid stroke endpoints
-                if (neighbors == 0) binary[idx] = 0;
+    for (int y = 1; y < WORK_SIZE - 1; y++) {
+        for (int x = 1; x < WORK_SIZE - 1; x++) {
+            int i = y * WORK_SIZE + x;
+            if (preprocess_bin[i] || preprocess_bin[i-1] || preprocess_bin[i+1] ||
+                preprocess_bin[i-WORK_SIZE] || preprocess_bin[i+WORK_SIZE]) {
+                preprocess_dilated[i] = 255;
             }
         }
     }
-    
-    // === STEP 5b: Selective stroke thickening (GitHub finding: TFLcam technique) ===
-    // Only thicken where strokes are 1px thin - prevents broken thin digits (1, 4, 7)
-    uint8_t thickened[INPUT_SIZE * INPUT_SIZE];
-    memcpy(thickened, binary, sizeof(thickened));
-    
-    for (int y = 1; y < INPUT_SIZE - 1; y++) {
-        for (int x = 1; x < INPUT_SIZE - 1; x++) {
-            if (binary[y * INPUT_SIZE + x] == 0) {
-                // Check if this black pixel has exactly 2 white neighbors in a line
-                // This indicates a thin stroke that could use thickening
-                int up = binary[(y-1)*INPUT_SIZE + x] > 0 ? 1 : 0;
-                int down = binary[(y+1)*INPUT_SIZE + x] > 0 ? 1 : 0;
-                int left = binary[y*INPUT_SIZE + (x-1)] > 0 ? 1 : 0;
-                int right = binary[y*INPUT_SIZE + (x+1)] > 0 ? 1 : 0;
-                
-                // Only fill if it connects two white pixels (prevents blob-ification)
-                if ((up && down) || (left && right)) {
-                    thickened[y * INPUT_SIZE + x] = 255;
-                }
+    memcpy(preprocess_bin, preprocess_dilated, WORK_SIZE * WORK_SIZE);
+
+    // --- STEP 3: Find Bounding Box ---
+    int minx = WORK_SIZE, miny = WORK_SIZE, maxx = -1, maxy = -1;
+    int pixels = 0;
+
+    for (int y = 0; y < WORK_SIZE; y++) {
+        for (int x = 0; x < WORK_SIZE; x++) {
+            if (preprocess_bin[y * WORK_SIZE + x]) {
+                if (x < minx) minx = x;
+                if (x > maxx) maxx = x;
+                if (y < miny) miny = y;
+                if (y > maxy) maxy = y;
+                pixels++;
             }
         }
     }
-    memcpy(binary, thickened, sizeof(binary));
-    
-    // === STEP 6: Bounding box + CENTER OF MASS calculation ===
-    // Research finding: MNIST uses center of mass, not bbox center
-    int bb_x0 = INPUT_SIZE, bb_y0 = INPUT_SIZE, bb_x1 = -1, bb_y1 = -1;
-    int white_count = 0;
-    float sum_x = 0, sum_y = 0, total_mass = 0;  // For center of mass
-    
+
+    if (pixels < 10) {
+        minx = 0; miny = 0; maxx = WORK_SIZE - 1; maxy = WORK_SIZE - 1;
+    }
+
+    // Add Padding (15%)
+    int pad_x = (maxx - minx + 1) * 15 / 100;
+    int pad_y = (maxy - miny + 1) * 15 / 100;
+    minx = max(0, minx - pad_x);
+    miny = max(0, miny - pad_y);
+    maxx = min(WORK_SIZE - 1, maxx + pad_x);
+    maxy = min(WORK_SIZE - 1, maxy + pad_y);
+
+    int box_w = maxx - minx + 1;
+    int box_h = maxy - miny + 1;
+
+    // --- STEP 4: Resize Box to 32x32 ---
+    // MNIST STANDARD: white digit (255) on black background (0)
     for (int y = 0; y < INPUT_SIZE; y++) {
         for (int x = 0; x < INPUT_SIZE; x++) {
-            uint8_t val = binary[y * INPUT_SIZE + x];
-            if (val > 0) {
-                white_count++;
-                // Bounding box
-                if (x < bb_x0) bb_x0 = x;
-                if (x > bb_x1) bb_x1 = x;
-                if (y < bb_y0) bb_y0 = y;
-                if (y > bb_y1) bb_y1 = y;
-                // Center of mass (intensity-weighted)
-                float mass = val / 255.0f;
-                sum_x += x * mass;
-                sum_y += y * mass;
-                total_mass += mass;
-            }
-        }
-    }
-    
-    // Handle empty or noise-only frame
-    if (white_count < 15 || bb_x1 <= bb_x0 || bb_y1 <= bb_y0 || total_mass < 1) {
-        memset(debug_image, 0, sizeof(debug_image));
-        memset(data, input_zp, INPUT_SIZE * INPUT_SIZE * INPUT_CHANNELS);
-        Serial.println("No digit detected");
-        return;
-    }
-    
-    // Calculate center of mass (MNIST standard method)
-    float com_x = sum_x / total_mass;
-    float com_y = sum_y / total_mass;
-    
-    int bb_w = bb_x1 - bb_x0 + 1;
-    int bb_h = bb_y1 - bb_y0 + 1;
-    
-    Serial.printf("BBox: [%d,%d]-[%d,%d] %dx%d COM: (%.1f,%.1f) white=%d\n", 
-        bb_x0, bb_y0, bb_x1, bb_y1, bb_w, bb_h, com_x, com_y, white_count);
-    
-    // === STEP 7: MNIST-style centering using CENTER OF MASS ===
-    // Research: MNIST normalizes to 20x20, centers by COM in 28x28
-    // For 32x32: scale to ~20x20, center by COM
-    uint8_t centered[INPUT_SIZE * INPUT_SIZE];
-    memset(centered, 0, sizeof(centered));
-    
-    int target = 20;  // MNIST uses 20x20 digit area
-    float img_center = INPUT_SIZE / 2.0f;  // 16.0 for 32x32
-    
-    // Aspect-preserving scale to fit in 20x20
-    float scaleX = (float)target / bb_w;
-    float scaleY = (float)target / bb_h;
-    float scale = (scaleX < scaleY) ? scaleX : scaleY;
-    
-    int new_w = (int)(bb_w * scale);
-    int new_h = (int)(bb_h * scale);
-    if (new_w < 1) new_w = 1;
-    if (new_h < 1) new_h = 1;
-    
-    // Calculate translation to center COM at image center
-    // After scaling, COM moves to: scaled_com = (com - bb_origin) * scale
-    float scaled_com_x = (com_x - bb_x0) * scale;
-    float scaled_com_y = (com_y - bb_y0) * scale;
-    
-    // Offset so that scaled COM aligns with image center
-    float off_x = img_center - scaled_com_x;
-    float off_y = img_center - scaled_com_y;
-    
-    // Bilinear interpolation with grayscale output (anti-aliased)
-    for (int dy = 0; dy < new_h; dy++) {
-        for (int dx = 0; dx < new_w; dx++) {
-            float src_xf = bb_x0 + (dx * (float)bb_w) / new_w;
-            float src_yf = bb_y0 + (dy * (float)bb_h) / new_h;
+            int sx = minx + (x * box_w) / INPUT_SIZE;
+            int sy = miny + (y * box_h) / INPUT_SIZE;
             
-            int x0 = (int)src_xf, y0 = (int)src_yf;
-            int x1 = x0 + 1, y1 = y0 + 1;
-            if (x1 >= INPUT_SIZE) x1 = INPUT_SIZE - 1;
-            if (y1 >= INPUT_SIZE) y1 = INPUT_SIZE - 1;
-            
-            float fx = src_xf - x0, fy = src_yf - y0;
-            
-            // Bilinear interpolation
-            float v00 = binary[y0 * INPUT_SIZE + x0];
-            float v01 = binary[y0 * INPUT_SIZE + x1];
-            float v10 = binary[y1 * INPUT_SIZE + x0];
-            float v11 = binary[y1 * INPUT_SIZE + x1];
-            
-            float val = v00*(1-fx)*(1-fy) + v01*fx*(1-fy) + v10*(1-fx)*fy + v11*fx*fy;
-            
-            int dst_x = (int)(off_x + dx);
-            int dst_y = (int)(off_y + dy);
-            if (dst_x >= 0 && dst_x < INPUT_SIZE && dst_y >= 0 && dst_y < INPUT_SIZE) {
-                // Keep grayscale for anti-aliasing (research recommendation)
-                centered[dst_y * INPUT_SIZE + dst_x] = (uint8_t)val;
-            }
-        }
-    }
-    
-    // === STEP 8: Direct quantization (NO blur - research recommendation) ===
-    for (int y = 0; y < INPUT_SIZE; y++) {
-        for (int x = 0; x < INPUT_SIZE; x++) {
-            uint8_t val = centered[y * INPUT_SIZE + x];
-            
-            // Save to debug buffer
-            debug_image[y * INPUT_SIZE + x] = val;
-            
-            // Quantize to int8 for model
-            float fval = val / 255.0f;
-            int8_t q = (int8_t)(fval / input_scale + input_zp);
-            
-            // Replicate to RGB channels
-            int idx = (y * INPUT_SIZE + x) * INPUT_CHANNELS;
-            data[idx + 0] = q;
-            data[idx + 1] = q;
-            data[idx + 2] = q;
+            if (sx < 0) sx = 0; if (sx >= WORK_SIZE) sx = WORK_SIZE - 1;
+            if (sy < 0) sy = 0; if (sy >= WORK_SIZE) sy = WORK_SIZE - 1;
+
+            // MNIST: digit=255 (white), background=0 (black)
+            uint8_t final_val = preprocess_bin[sy * WORK_SIZE + sx];  // Already 255 or 0
+
+            debug_image[y * INPUT_SIZE + x] = final_val;
+
+            float v = final_val / 255.0f;
+            int8_t q = (int8_t)(v / input_scale + input_zp);
+
+            data[(y * INPUT_SIZE + x) * 3 + 0] = q;
+            data[(y * INPUT_SIZE + x) * 3 + 1] = q;
+            data[(y * INPUT_SIZE + x) * 3 + 2] = q;
         }
     }
 }
-
-
 
 // ==================== INFERENCE ====================
 // GitHub finding: Flush old frames before capture (jomjol/AI-on-the-edge-device)
@@ -1197,6 +1055,16 @@ void setup() {
         while(1) delay(1000);
     }
     Serial.printf("Tensor arena: %d KB in PSRAM\n", TENSOR_ARENA_SIZE / 1024);
+    
+    // Allocate preprocessing buffers in PSRAM (avoid DRAM overflow)
+    preprocess_gray = (uint8_t*)ps_malloc(WORK_SIZE * WORK_SIZE);
+    preprocess_bin = (uint8_t*)ps_malloc(WORK_SIZE * WORK_SIZE);
+    preprocess_dilated = (uint8_t*)ps_malloc(WORK_SIZE * WORK_SIZE);
+    if (!preprocess_gray || !preprocess_bin || !preprocess_dilated) {
+        Serial.println("ERROR: Failed to allocate preprocessing buffers!");
+        while(1) delay(1000);
+    }
+    Serial.printf("Preprocess buffers: %d KB in PSRAM\n", (WORK_SIZE * WORK_SIZE * 3) / 1024);
     
     pinMode(LED_GPIO_NUM, OUTPUT);
     digitalWrite(LED_GPIO_NUM, LOW);

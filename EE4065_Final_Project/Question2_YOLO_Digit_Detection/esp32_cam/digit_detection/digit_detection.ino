@@ -21,8 +21,23 @@
 #include "tensorflow/lite/micro/micro_interpreter.h"
 #include "tensorflow/lite/schema/schema_generated.h"
 
-// Model (MicroYOLO - Colab'dan üretilen)
-#include "micro_yolo_v4_model.h"
+// Custom YOLO-Nano Model
+// >>> MODEL SEÇİMİ: Hangisini kullanmak istiyorsan uncomment yap <<<
+#define USE_ROBOFLOW_MODEL true  // true = Roboflow, false = MNIST
+
+#if USE_ROBOFLOW_MODEL
+    #include "yolo_model_roboflow.h"
+    #define yolo_input_scale yolo_roboflow_input_scale
+    #define yolo_input_zero_point yolo_roboflow_input_zero_point
+    #define yolo_model yolo_roboflow_model
+    #define yolo_model_len yolo_roboflow_model_len
+#else
+    #include "yolo_model_mnist.h"
+    #define yolo_input_scale yolo_mnist_input_scale
+    #define yolo_input_zero_point yolo_mnist_input_zero_point
+    #define yolo_model yolo_mnist_model
+    #define yolo_model_len yolo_mnist_model_len
+#endif
 
 // ==================== WIFI AYARLARI ====================
 // 
@@ -30,7 +45,7 @@
 //   true  = AP Mode (Okul - portlar kapalıyken)
 //   false = Station Mode (Ev - mevcut WiFi'ye bağlan)
 //
-#define USE_AP_MODE false
+#define USE_AP_MODE true
 
 // ----- AP Mode (ESP32 kendi WiFi ağını oluşturur) -----
 // Bağlantı: ESP32'nin oluşturduğu ağa bağlan, IP: 192.168.4.1
@@ -42,10 +57,11 @@ const char* ap_password = "12345678";
 const char* sta_ssid = "Xiaomi 12T";
 const char* sta_password = "okps2644";
 
-#define INPUT_WIDTH  MICRO_YOLO_INPUT_SIZE
-#define INPUT_HEIGHT MICRO_YOLO_INPUT_SIZE
-#define INPUT_CHANNELS 3
-#define GRID_SIZE MICRO_YOLO_GRID_SIZE
+#define INPUT_WIDTH  96
+#define INPUT_HEIGHT 96
+#define GRID_SIZE 6
+#define NUM_ANCHORS 2
+#define NUM_CLASSES 10
 
 // Tensor arena - model 122KB, arena ~200KB yeterli
 constexpr int kTensorArenaSize = 200 * 1024;
@@ -86,6 +102,9 @@ struct Detection {
 #define MAX_DETECTIONS 10
 Detection detections[MAX_DETECTIONS];
 int num_detections = 0;
+
+// Class labels for digits 0-9
+const char* digit_labels[] = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9"};
 
 // Son çekilen fotoğraf (snapshot için)
 uint8_t* last_snapshot = nullptr;
@@ -142,7 +161,7 @@ bool initCamera() {
     }
     
     delay(100);
-    Serial.println("Kamera başlatılıyor...");
+    Serial.println("Kamera başlatılıyor (Custom YOLO-Nano)...");
     esp_err_t err = esp_camera_init(&config);
     
     // Başarısız olursa düşük ayarlarla tekrar dene
@@ -189,7 +208,7 @@ bool initTFLite() {
     }
     
     static tflite::MicroErrorReporter error_reporter;
-    const tflite::Model* model = tflite::GetModel(digit_model);
+    const tflite::Model* model = tflite::GetModel(yolo_model);
     
     if (model->version() != TFLITE_SCHEMA_VERSION) {
         Serial.println("Model sürümü uyumsuz!");
@@ -197,7 +216,7 @@ bool initTFLite() {
     }
     
     // Sadece gerekli operatörleri ekle (hızlandırma için)
-    static tflite::MicroMutableOpResolver<18> resolver;
+    static tflite::MicroMutableOpResolver<25> resolver;
     resolver.AddConv2D();
     resolver.AddDepthwiseConv2D();
     resolver.AddMaxPool2D();
@@ -215,6 +234,11 @@ bool initTFLite() {
     resolver.AddPad();
     resolver.AddQuantize();      // INT8 quantization
     resolver.AddDequantize();    // INT8 dequantization
+    resolver.AddLeakyRelu();     // LeakyReLU (Custom YOLO-Nano için)
+    resolver.AddShape();         // Shape operatörü
+    resolver.AddGather();        // Gather operatörü
+    resolver.AddExpandDims();    // ExpandDims operatörü
+    resolver.AddFill();          // Fill operatörü
     
     static tflite::MicroInterpreter static_interpreter(
         model, resolver, tensor_arena, kTensorArenaSize, &error_reporter);
@@ -244,24 +268,30 @@ bool initTFLite() {
     }
     Serial.println("]");
     
+    // Output scale/zp
     Serial.printf("Output scale: %.6f, zero_point: %d\n", 
                   output->params.scale, output->params.zero_point);
-    Serial.printf("Toplam output eleman: %d\n", output->bytes);
     
-    Serial.println("TensorFlow Lite hazır!");
+    Serial.println("TensorFlow Lite (YOLO-Nano) hazır!");
     return true;
 }
 
 // ==================== GÖRÜNTÜ İŞLEME ====================
 // Kamera görüntüsünü 96x96'ya resize edip grayscale'e çevir
+// Q4'ten alınan: Contrast Stretch eklendi (preprocessing iyileştirmesi)
 void preprocessImage(camera_fb_t* fb, int8_t* data) {
     uint16_t* img = (uint16_t*)fb->buf;
     int src_w = fb->width;
     int src_h = fb->height;
     
-    // Bilinear interpolation ile resize
+    // Temporary buffer for grayscale values (for contrast stretch)
+    static uint8_t gray_temp[INPUT_WIDTH * INPUT_HEIGHT];
+    
+    // Bilinear interpolation ile resize + grayscale
     float x_ratio = (float)src_w / INPUT_WIDTH;
     float y_ratio = (float)src_h / INPUT_HEIGHT;
+    
+    uint8_t min_val = 255, max_val = 0;
     
     for (int y = 0; y < INPUT_HEIGHT; y++) {
         for (int x = 0; x < INPUT_WIDTH; x++) {
@@ -302,16 +332,33 @@ void preprocessImage(camera_fb_t* fb, int8_t* data) {
                         g10 * (1 - x_diff) * y_diff +
                         g11 * x_diff * y_diff;
             
-            // INT8 quantization: value - 128
-            int8_t val = (int8_t)(constrain((int)gray, 0, 255) - 128);
+            uint8_t gray_val = constrain((int)gray, 0, 255);
+            gray_temp[y * INPUT_WIDTH + x] = gray_val;
             
-            // 3 kanala aynı değeri kopyala
-            int idx = y * INPUT_WIDTH + x;
-            int base = idx * INPUT_CHANNELS;
-            data[base + 0] = val;
-            data[base + 1] = val;
-            data[base + 2] = val;
+            // Track min/max for contrast stretch
+            if (gray_val < min_val) min_val = gray_val;
+            if (gray_val > max_val) max_val = gray_val;
         }
+    }
+    
+    // --- CONTRAST STRETCH (Q4'ten alındı) ---
+    // Histogram'ı [0-255] aralığına yay
+    int range = max_val - min_val;
+    if (range < 10) range = 10;  // Çok düşük kontrast durumunda sıfıra bölmeyi önle
+    
+    for (int i = 0; i < INPUT_WIDTH * INPUT_HEIGHT; i++) {
+        int stretched = ((gray_temp[i] - min_val) * 255) / range;
+        stretched = constrain(stretched, 0, 255);
+        
+        // INT8 quantization using model's input parameters
+        // yolo_input_scale = 0.00378, yolo_input_zero_point = -128
+        // Formula: quantized = float_value / scale + zero_point
+        // For normalized [0,1] input: q = (stretched/255.0) / scale + zero_point
+        // Simplified: q = stretched / (255 * scale) + zero_point
+        int8_t val = (int8_t)((stretched / 255.0f) / yolo_input_scale + yolo_input_zero_point);
+        
+        // Single channel output (model expects grayscale)
+        data[i] = val;
     }
 }
 
@@ -326,173 +373,150 @@ float calculateIoU(Detection& a, Detection& b) {
     return intersection / (union_area + 1e-6);
 }
 
-// ==================== MicroYOLO TESPİT (6x6 Grid) ====================
+// ==================== Custom YOLO-Nano DECODING ====================
 int detectDigits(camera_fb_t* fb) {
     num_detections = 0;
     if (!fb || !fb->buf) return 0;
     
-    // Frame boyutunu kontrol et (ilk 5 tespit icin)
-    static int debug_count = 0;
-    if (debug_count < 5) {
-        Serial.printf("Frame: %dx%d, format=%d, len=%d\n", 
-                      fb->width, fb->height, fb->format, fb->len);
-        debug_count++;
-    }
-    
     preprocessImage(fb, input->data.int8);
-    
-    // Input degerlerini debug et (ilk 3 tespit)
-    static int input_debug = 0;
-    if (input_debug < 3) {
-        int8_t* inp = input->data.int8;
-        // Orta bolgenin input degerlerini goster
-        Serial.print("Input center values: ");
-        int center = 48 * 96 + 48;  // Ortadaki piksel
-        for (int i = 0; i < 10; i++) {
-            Serial.printf("%d ", inp[(center + i) * 3]);
-        }
-        Serial.println();
-        
-        // Min/max input degerleri
-        int8_t min_val = 127, max_val = -128;
-        for (int i = 0; i < 96*96*3; i++) {
-            if (inp[i] < min_val) min_val = inp[i];
-            if (inp[i] > max_val) max_val = inp[i];
-        }
-        Serial.printf("Input range: [%d, %d]\n", min_val, max_val);
-        input_debug++;
-    }
     
     unsigned long t = millis();
     if (interpreter->Invoke() != kTfLiteOk) {
         Serial.println("Inference basarisiz!");
         return 0;
     }
-    Serial.printf("Inference: %lu ms\n", millis() - t);
+    long inference_time = millis() - t;
+    Serial.printf("Inference: %lu ms\n", inference_time);
     
-    int8_t* out = output->data.int8;
-    float scale = output->params.scale;
-    int zp = output->params.zero_point;
-    
-    // Output boyutlarini kontrol et
-    int out_dims = output->dims->size;
-    int total_elements = 1;
-    Serial.printf("Output dims=%d: [", out_dims);
-    for (int i = 0; i < out_dims; i++) {
-        Serial.printf("%d", output->dims->data[i]);
-        total_elements *= output->dims->data[i];
-        if (i < out_dims - 1) Serial.print(",");
+    // Output type check
+    if (output->type == kTfLiteFloat32) {
+        Serial.println("Output type: Float32 (Correct)");
+    } else if (output->type == kTfLiteInt8) {
+        Serial.println("Output type: Int8 (Unexpected!)");
     }
-    Serial.printf("], total=%d\n", total_elements);
+
+    float* out = output->data.f; // Use float pointer directly
+    // float scale = output->params.scale; // Not needed for float32
+    // int zp = output->params.zero_point; // Not needed for float32
     
-    // Ilk 20 output degerini goster (debug)
+    // DEBUG: Print first 20 values
     Serial.print("First 20 out: ");
-    for (int i = 0; i < 20 && i < total_elements; i++) {
-        float val = (out[i] - zp) * scale;
-        Serial.printf("%.2f ", val);
+    for (int i = 0; i < 20; i++) {
+        Serial.printf("%.2f ", out[i]);
     }
     Serial.println();
     
-    // MicroYOLO output: (1, 6, 6, 15) veya flatten (1, 540)
-    // [x_offset, y_offset, width, height, confidence, class0-9]
-    const int cells_per_row = 15;  // Her grid hucresi 15 deger
+    float conf_thresh = 0.05; // Çok düşük - debug için
+    float nms_thresh = 0.30;
     
-    float conf_thresh = 0.35;
-    float nms_thresh = 0.45;
-    
-    Detection temp[36];  // Max 6x6 = 36
+    Detection temp[MAX_DETECTIONS * 3]; 
     int temp_count = 0;
     
-    // 6x6 grid uzerinde dolas
+    // Output Shape: [1, 6, 6, 2, 15] (Batch, GridY, GridX, Anchor, Values)
+    // Flattened index mapping needed
+    int values_per_anchor = 5 + NUM_CLASSES; // 15
+    int anchors_per_cell = NUM_ANCHORS;      // 2
+    int total_cells = GRID_SIZE * GRID_SIZE; // 36
+    
+    // DEBUG: Find max objectness across all cells
+    float max_obj = -1000;
+    int max_gy = 0, max_gx = 0, max_a = 0;
+    
     for (int gy = 0; gy < GRID_SIZE; gy++) {
         for (int gx = 0; gx < GRID_SIZE; gx++) {
-            int cell_idx = (gy * GRID_SIZE + gx) * cells_per_row;
-            
-            // Confidence (index 4)
-            float conf = ((float)(out[cell_idx + 4] - zp)) * scale;
-            if (conf < conf_thresh) continue;
-            
-            // En iyi sinif bul (index 5-14)
-            int best_cls = 0;
-            float best_prob = -1000;
-            float class_probs[10];
-            for (int c = 0; c < NUM_CLASSES; c++) {
-                float prob = ((float)(out[cell_idx + 5 + c] - zp)) * scale;
-                class_probs[c] = prob;
-                if (prob > best_prob) {
-                    best_prob = prob;
-                    best_cls = c;
+            for (int a = 0; a < anchors_per_cell; a++) {
+                // Calculate index in flattened array
+                // Index formula depends on TFLite export (usually NHWC)
+                // Assuming [GridY, GridX, Anchor, Values]
+                int cell_idx = ((gy * GRID_SIZE + gx) * anchors_per_cell + a) * values_per_anchor;
+                
+                // Helper: Sigmoid function
+                auto sigmoid = [](float x) -> float {
+                    return 1.0f / (1.0f + expf(-x));
+                };
+                
+                // 1. Objectness (Index 0) - Apply Sigmoid!
+                float obj_raw = out[cell_idx + 0];
+                float obj = sigmoid(obj_raw);
+                
+                // Track max objectness
+                if (obj > max_obj) {
+                    max_obj = obj;
+                    max_gy = gy;
+                    max_gx = gx;
+                    max_a = a;
                 }
-            }
-            
-            // Debug: Raw INT8 ve dequantized degerleri goster
-            Serial.printf("Cell(%d,%d) conf=%.2f raw_int8=[", gx, gy, conf);
-            for (int c = 0; c < 10; c++) {
-                Serial.printf("%d", out[cell_idx + 5 + c]);
-                if (c < 9) Serial.print(",");
-            }
-            Serial.printf("] probs=[");
-            for (int c = 0; c < 10; c++) {
-                Serial.printf("%.2f", class_probs[c]);
-                if (c < 9) Serial.print(",");
-            }
-            Serial.printf("] best=%d\n", best_cls);
-            
-            float final_conf = conf * best_prob;
-            if (final_conf < conf_thresh) continue;
-            
-            // Koordinatlar (index 0-3: x_offset, y_offset, width, height)
-            float x_offset = ((float)(out[cell_idx + 0] - zp)) * scale;
-            float y_offset = ((float)(out[cell_idx + 1] - zp)) * scale;
-            float w = ((float)(out[cell_idx + 2] - zp)) * scale;
-            float h = ((float)(out[cell_idx + 3] - zp)) * scale;
-            
-            // Grid hucresi + offset -> normalize koordinat
-            float x_center = (gx + x_offset) / GRID_SIZE;
-            float y_center = (gy + y_offset) / GRID_SIZE;
-            
-            // Sinirlari kontrol et
-            x_center = constrain(x_center, 0.0f, 1.0f);
-            y_center = constrain(y_center, 0.0f, 1.0f);
-            w = constrain(w, 0.01f, 1.0f);
-            h = constrain(h, 0.01f, 1.0f);
-            
-            if (temp_count < 36) {
-                temp[temp_count].class_id = best_cls;
-                temp[temp_count].confidence = final_conf;
-                temp[temp_count].x = x_center;
-                temp[temp_count].y = y_center;
-                temp[temp_count].w = w;
-                temp[temp_count].h = h;
-                temp_count++;
+                
+                if (obj < conf_thresh) continue;
+                
+                // 4. Classes (Index 5-14) - Apply Softmax
+                int best_cls = 0;
+                float best_prob = 0;
+                float class_sum = 0;
+                float class_probs[NUM_CLASSES];
+                
+                // Softmax: exp(x_i) / sum(exp(x_j))
+                for (int c = 0; c < NUM_CLASSES; c++) {
+                    class_probs[c] = expf(out[cell_idx + 5 + c]);
+                    class_sum += class_probs[c];
+                }
+                for (int c = 0; c < NUM_CLASSES; c++) {
+                    float prob = class_probs[c] / class_sum;
+                    if (prob > best_prob) {
+                        best_prob = prob;
+                        best_cls = c;
+                    }
+                }
+                
+                float score = obj * best_prob;
+                if (score < conf_thresh) continue;
+                
+                // 2. Coordinates (Index 1-4) - Apply Sigmoid!
+                float bx = sigmoid(out[cell_idx + 1]); // Center X relative to cell (0-1)
+                float by = sigmoid(out[cell_idx + 2]); // Center Y relative to cell (0-1)
+                float bw = sigmoid(out[cell_idx + 3]); // Width (0-1)
+                float bh = sigmoid(out[cell_idx + 4]); // Height (0-1)
+                
+                // YOLO-Nano Decoding (Direct Regression)
+                float x_center = (gx + bx) / GRID_SIZE;
+                float y_center = (gy + by) / GRID_SIZE;
+                
+                if (temp_count < MAX_DETECTIONS * 3) {
+                    temp[temp_count].class_id = best_cls;
+                    temp[temp_count].confidence = score;
+                    temp[temp_count].x = x_center;
+                    temp[temp_count].y = y_center;
+                    temp[temp_count].w = bw;
+                    temp[temp_count].h = bh;
+                    temp_count++;
+                }
             }
         }
     }
     
+    // DEBUG: Print max objectness found
+    Serial.printf("Max objectness: %.4f at cell(%d,%d) anchor=%d\n", max_obj, max_gx, max_gy, max_a);
+    Serial.printf("Candidates before NMS: %d\n", temp_count);
+    
     // NMS
-    bool suppressed[36] = {false};
+    bool suppressed[60] = {false}; // temp_count limit
     for (int i = 0; i < temp_count; i++) {
         if (suppressed[i]) continue;
+        
+        // Add to final detections
         if (num_detections < MAX_DETECTIONS) {
             detections[num_detections++] = temp[i];
+            
+            // Suppress IoU > thresh
             for (int j = i + 1; j < temp_count; j++) {
-                if (!suppressed[j] && temp[i].class_id == temp[j].class_id &&
-                    calculateIoU(temp[i], temp[j]) > nms_thresh) {
+                if (!suppressed[j] && calculateIoU(temp[i], temp[j]) > nms_thresh) {
                     suppressed[j] = true;
                 }
             }
         }
     }
     
-    Serial.printf("Tespit: %d rakam\n", num_detections);
-    for (int i = 0; i < num_detections; i++) {
-        Serial.printf("  %s (%.1f%%) @ (%.2f,%.2f,%.2f,%.2f)\n",
-                      digit_labels[detections[i].class_id],
-                      detections[i].confidence * 100,
-                      detections[i].x, detections[i].y,
-                      detections[i].w, detections[i].h);
-    }
-    
+    Serial.printf("Detected: %d digits\n", num_detections);
     return num_detections;
 }
 
