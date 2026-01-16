@@ -1,0 +1,49 @@
+../tensorflow/lite/micro/micro_allocator.cc:59:9:virtual void* tflite::{anonymous}::MicroBuiltinDataAllocator::Allocate(size_t, size_t)	1
+../tensorflow/lite/micro/micro_allocator.cc:63:8:virtual void tflite::{anonymous}::MicroBuiltinDataAllocator::Deallocate(void*)	1
+../tensorflow/lite/micro/micro_allocator.cc:387:1:tflite::MicroAllocator::~MicroAllocator()	1
+../tensorflow/lite/micro/micro_allocator.cc:533:7:virtual void* tflite::MicroAllocator::AllocatePersistentBuffer(size_t)	1
+../tensorflow/lite/micro/micro_allocator.cc:744:10:virtual uint8_t* tflite::MicroAllocator::AllocateTempBuffer(size_t, size_t)	1
+../tensorflow/lite/micro/micro_allocator.cc:748:6:virtual void tflite::MicroAllocator::DeallocateTempBuffer(uint8_t*)	1
+../tensorflow/lite/micro/micro_allocator.cc:752:14:virtual TfLiteStatus tflite::MicroAllocator::ResetTempAllocations()	1
+../tensorflow/lite/micro/micro_allocator.cc:756:6:virtual bool tflite::MicroAllocator::IsAllTempDeallocated()	1
+../tensorflow/lite/micro/micro_allocator.cc:821:15:virtual TfLiteTensor* tflite::MicroAllocator::AllocatePersistentTfLiteTensorInternal()	1
+../tensorflow/lite/micro/micro_allocator.cc:53:7:tflite::{anonymous}::MicroBuiltinDataAllocator::~MicroBuiltinDataAllocator()	1
+../tensorflow/lite/micro/micro_allocator.cc:681:6:virtual void tflite::MicroAllocator::DeallocateTempTfLiteTensor(TfLiteTensor*)	3
+../tensorflow/lite/micro/micro_allocator.cc:387:1:virtual tflite::MicroAllocator::~MicroAllocator()	1
+../tensorflow/lite/micro/micro_allocator.cc:53:7:virtual tflite::{anonymous}::MicroBuiltinDataAllocator::~MicroBuiltinDataAllocator()	1
+../tensorflow/lite/micro/micro_allocator.cc:937:14:virtual TfLiteStatus tflite::MicroAllocator::AllocateScratchBufferHandles(tflite::ScratchBufferHandle**, size_t)	2
+C:/Users/Kerem/STM32CubeIDE/workspace_1.19.0/HW6/third_party/flatbuffers/include/flatbuffers/table.h:35:13:flatbuffers::voffset_t flatbuffers::Table::GetOptionalFieldOffset(flatbuffers::voffset_t) const	2
+C:/Users/Kerem/STM32CubeIDE/workspace_1.19.0/HW6/tensorflow/lite/schema/schema_generated.h:5088:37:const flatbuffers::Vector<float>* tflite::QuantizationParameters::scale() const	2
+C:/Users/Kerem/STM32CubeIDE/workspace_1.19.0/HW6/tensorflow/lite/schema/schema_generated.h:5091:39:const flatbuffers::Vector<long long int>* tflite::QuantizationParameters::zero_point() const	2
+C:/Users/Kerem/STM32CubeIDE/workspace_1.19.0/HW6/tensorflow/lite/schema/schema_generated.h:5774:22:tflite::TensorType tflite::Tensor::type() const	2
+C:/Users/Kerem/STM32CubeIDE/workspace_1.19.0/HW6/tensorflow/lite/schema/schema_generated.h:5786:8:bool tflite::Tensor::is_variable() const	2
+C:/Users/Kerem/STM32CubeIDE/workspace_1.19.0/HW6/tensorflow/lite/schema/schema_generated.h:15871:67:const flatbuffers::Vector<flatbuffers::Offset<tflite::Tensor> >* tflite::SubGraph::tensors() const	2
+C:/Users/Kerem/STM32CubeIDE/workspace_1.19.0/HW6/tensorflow/lite/schema/schema_generated.h:16361:69:const flatbuffers::Vector<flatbuffers::Offset<tflite::SubGraph> >* tflite::Model::subgraphs() const	2
+../tensorflow/lite/micro/micro_allocator.cc:186:7:void* tflite::internal::GetFlatbufferTensorBuffer(const tflite::Tensor&, const flatbuffers::Vector<flatbuffers::Offset<tflite::Buffer> >*)	4
+../tensorflow/lite/micro/micro_allocator.cc:336:14:TfLiteStatus tflite::internal::InitializeTfLiteEvalTensorFromFlatbuffer(const tflite::Tensor&, const flatbuffers::Vector<flatbuffers::Offset<tflite::Buffer> >*, TfLiteEvalTensor*)	3
+../tensorflow/lite/micro/micro_allocator.cc:360:8:static size_t tflite::MicroAllocator::GetDefaultTailUsage(bool)	2
+../tensorflow/lite/micro/micro_allocator.cc:371:1:tflite::MicroAllocator::MicroAllocator(tflite::SingleArenaBufferAllocator*, tflite::MicroMemoryPlanner*)	2
+../tensorflow/lite/micro/micro_allocator.cc:378:1:tflite::MicroAllocator::MicroAllocator(tflite::IPersistentBufferAllocator*, tflite::INonPersistentBufferAllocator*, tflite::MicroMemoryPlanner*)	1
+../tensorflow/lite/micro/micro_allocator.cc:416:17:static tflite::MicroAllocator* tflite::MicroAllocator::Create(tflite::SingleArenaBufferAllocator*, tflite::MicroMemoryPlanner*)	2
+../tensorflow/lite/micro/micro_allocator.cc:389:17:static tflite::MicroAllocator* tflite::MicroAllocator::Create(uint8_t*, size_t, tflite::MicroMemoryPlanner*)	1
+../tensorflow/lite/micro/micro_allocator.cc:400:17:static tflite::MicroAllocator* tflite::MicroAllocator::Create(uint8_t*, size_t, tflite::MemoryPlannerType)	4
+../tensorflow/lite/micro/micro_allocator.cc:429:17:static tflite::MicroAllocator* tflite::MicroAllocator::Create(uint8_t*, size_t, uint8_t*, size_t, tflite::MemoryPlannerType)	5
+../tensorflow/lite/micro/micro_allocator.cc:512:14:TfLiteStatus tflite::MicroAllocator::FinishModelAllocation(const tflite::Model*, tflite::SubgraphAllocations*, tflite::ScratchBufferHandle**)	4
+../tensorflow/lite/micro/micro_allocator.cc:609:8:size_t tflite::MicroAllocator::used_bytes() const	1
+../tensorflow/lite/micro/micro_allocator.cc:956:14:TfLiteStatus tflite::MicroAllocator::InitScratchBufferData()	1
+../tensorflow/lite/micro/micro_allocator.cc:472:22:tflite::SubgraphAllocations* tflite::MicroAllocator::StartModelAllocation(const tflite::Model*)	6
+../tensorflow/lite/micro/micro_allocator.cc:975:33:tflite::internal::ScratchBufferRequest* tflite::MicroAllocator::GetScratchBufferRequests()	1
+../tensorflow/lite/micro/micro_allocator.cc:538:14:TfLiteStatus tflite::MicroAllocator::RequestScratchBufferInArena(size_t, int, int*)	4
+../tensorflow/lite/micro/micro_allocator.cc:579:14:TfLiteStatus tflite::MicroAllocator::FinishPrepareNodeAllocations(int)	4
+../tensorflow/lite/micro/micro_allocator.cc:980:35:tflite::TfLiteBridgeBuiltinDataAllocator* tflite::MicroAllocator::GetBuiltinDataAllocator()	1
+C:/Users/Kerem/STM32CubeIDE/workspace_1.19.0/HW6/third_party/flatbuffers/include/flatbuffers/vector.h:169:15:flatbuffers::Vector<T>::return_type flatbuffers::Vector<T>::Get(flatbuffers::uoffset_t) const [with T = long long int]	1
+../tensorflow/lite/micro/micro_allocator.cc:216:14:TfLiteStatus tflite::internal::InitializeTfLiteTensorFromFlatbuffer(tflite::IPersistentBufferAllocator*, tflite::INonPersistentBufferAllocator*, bool, const tflite::Tensor&, const flatbuffers::Vector<flatbuffers::Offset<tflite::Buffer> >*, TfLiteTensor*)	16
+C:/Users/Kerem/STM32CubeIDE/workspace_1.19.0/HW6/third_party/flatbuffers/include/flatbuffers/vector.h:169:15:flatbuffers::Vector<T>::return_type flatbuffers::Vector<T>::Get(flatbuffers::uoffset_t) const [with T = flatbuffers::Offset<tflite::Tensor>]	1
+../tensorflow/lite/micro/micro_allocator.cc:794:14:virtual TfLiteStatus tflite::MicroAllocator::AllocateVariables(const tflite::SubGraph*, TfLiteEvalTensor*, const int32_t*)	7
+C:/Users/Kerem/STM32CubeIDE/workspace_1.19.0/HW6/third_party/flatbuffers/include/flatbuffers/vector.h:169:15:flatbuffers::Vector<T>::return_type flatbuffers::Vector<T>::Get(flatbuffers::uoffset_t) const [with T = flatbuffers::Offset<tflite::SubGraph>]	1
+../tensorflow/lite/micro/micro_allocator.cc:614:14:virtual TfLiteStatus tflite::MicroAllocator::AllocateNodeAndRegistrations(const tflite::Model*, tflite::SubgraphAllocations*)	4
+../tensorflow/lite/micro/micro_allocator.cc:639:15:virtual TfLiteTensor* tflite::MicroAllocator::AllocatePersistentTfLiteTensor(const tflite::Model*, const tflite::SubgraphAllocations*, int, int)	4
+../tensorflow/lite/micro/micro_allocator.cc:705:15:virtual TfLiteTensor* tflite::MicroAllocator::AllocateTempTfLiteTensor(const tflite::Model*, const tflite::SubgraphAllocations*, int, int)	3
+../tensorflow/lite/micro/micro_allocator.cc:840:14:virtual TfLiteStatus tflite::MicroAllocator::CommitStaticMemoryPlan(const tflite::Model*, tflite::SubgraphAllocations*, tflite::ScratchBufferHandle*)	19
+../tensorflow/lite/micro/micro_allocator.cc:827:14:virtual TfLiteStatus tflite::MicroAllocator::PopulateTfLiteTensorFromFlatbuffer(const tflite::Model*, TfLiteTensor*, int, int, bool)	2
+../tensorflow/lite/micro/micro_allocator.cc:760:14:virtual TfLiteStatus tflite::MicroAllocator::AllocateTfLiteEvalTensors(const tflite::Model*, tflite::SubgraphAllocations*)	7

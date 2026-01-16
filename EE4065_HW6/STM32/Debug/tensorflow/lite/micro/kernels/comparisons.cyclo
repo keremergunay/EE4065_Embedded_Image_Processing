@@ -1,0 +1,30 @@
+../tensorflow/lite/micro/kernels/comparisons.cc:531:7:void* tflite::{anonymous}::Init(TfLiteContext*, const char*, size_t)	1
+../tensorflow/lite/micro/kernels/comparisons.cc:536:14:TfLiteStatus tflite::{anonymous}::Prepare(TfLiteContext*, TfLiteNode*)	4
+C:/Users/Kerem/STM32CubeIDE/workspace_1.19.0/HW6/tensorflow/lite/kernels/internal/runtime_shape.h:67:11:int32_t tflite::RuntimeShape::Dims(int) const	2
+C:/Users/Kerem/STM32CubeIDE/workspace_1.19.0/HW6/tensorflow/lite/kernels/internal/runtime_shape.h:133:12:int tflite::Offset(const RuntimeShape&, int, int, int, int)	17
+C:/Users/Kerem/STM32CubeIDE/workspace_1.19.0/HW6/tensorflow/lite/kernels/internal/types.h:323:12:int tflite::MatchingFlatSize(const RuntimeShape&, const RuntimeShape&, const RuntimeShape&)	7
+C:/Users/Kerem/STM32CubeIDE/workspace_1.19.0/HW6/tensorflow/lite/kernels/internal/common.h:354:16:int32_t tflite::MultiplyByQuantizedMultiplierSmallerThanOneExp(int32_t, int32_t, int)	4
+C:/Users/Kerem/STM32CubeIDE/workspace_1.19.0/HW6/tensorflow/lite/kernels/internal/common.h:1046:12:int tflite::SubscriptToIndex(const NdArrayDesc<4>&, int, int, int, int)	8
+../tensorflow/lite/micro/kernels/comparisons.cc:582:18:TFLMRegistration tflite::Register_EQUAL()	1
+../tensorflow/lite/micro/kernels/comparisons.cc:586:18:TFLMRegistration tflite::Register_NOT_EQUAL()	1
+../tensorflow/lite/micro/kernels/comparisons.cc:590:18:TFLMRegistration tflite::Register_GREATER()	1
+../tensorflow/lite/micro/kernels/comparisons.cc:594:18:TFLMRegistration tflite::Register_GREATER_EQUAL()	1
+../tensorflow/lite/micro/kernels/comparisons.cc:598:18:TFLMRegistration tflite::Register_LESS()	1
+../tensorflow/lite/micro/kernels/comparisons.cc:602:18:TFLMRegistration tflite::Register_LESS_EQUAL()	1
+C:/Users/Kerem/STM32CubeIDE/workspace_1.19.0/HW6/tensorflow/lite/micro/kernels/kernel_util.h:76:10:const T* tflite::micro::GetTensorData(const TfLiteEvalTensor*) [with T = bool]	1
+C:/Users/Kerem/STM32CubeIDE/workspace_1.19.0/HW6/tensorflow/lite/micro/kernels/kernel_util.h:76:10:const T* tflite::micro::GetTensorData(const TfLiteEvalTensor*) [with T = float]	1
+C:/Users/Kerem/STM32CubeIDE/workspace_1.19.0/HW6/tensorflow/lite/micro/kernels/kernel_util.h:76:10:const T* tflite::micro::GetTensorData(const TfLiteEvalTensor*) [with T = long int]	1
+C:/Users/Kerem/STM32CubeIDE/workspace_1.19.0/HW6/tensorflow/lite/micro/kernels/kernel_util.h:76:10:const T* tflite::micro::GetTensorData(const TfLiteEvalTensor*) [with T = long long int]	1
+C:/Users/Kerem/STM32CubeIDE/workspace_1.19.0/HW6/tensorflow/lite/micro/kernels/kernel_util.h:76:10:const T* tflite::micro::GetTensorData(const TfLiteEvalTensor*) [with T = signed char]	1
+C:/Users/Kerem/STM32CubeIDE/workspace_1.19.0/HW6/tensorflow/lite/kernels/internal/reference/comparisons.h:159:13:void tflite::reference_ops::BroadcastComparison4DSlowWithScaling(const tflite::ComparisonParams&, const tflite::RuntimeShape&, const T*, const tflite::RuntimeShape&, const T*, const tflite::RuntimeShape&, bool*) [with T = signed char; bool (* F)(long int, long int) = EqualFn<long int>]	8
+../tensorflow/lite/micro/kernels/comparisons.cc:36:14:TfLiteStatus tflite::{anonymous}::EqualEval(TfLiteContext*, TfLiteNode*)	49
+C:/Users/Kerem/STM32CubeIDE/workspace_1.19.0/HW6/tensorflow/lite/kernels/internal/reference/comparisons.h:159:13:void tflite::reference_ops::BroadcastComparison4DSlowWithScaling(const tflite::ComparisonParams&, const tflite::RuntimeShape&, const T*, const tflite::RuntimeShape&, const T*, const tflite::RuntimeShape&, bool*) [with T = signed char; bool (* F)(long int, long int) = NotEqualFn<long int>]	8
+../tensorflow/lite/micro/kernels/comparisons.cc:128:14:TfLiteStatus tflite::{anonymous}::NotEqualEval(TfLiteContext*, TfLiteNode*)	49
+C:/Users/Kerem/STM32CubeIDE/workspace_1.19.0/HW6/tensorflow/lite/kernels/internal/reference/comparisons.h:159:13:void tflite::reference_ops::BroadcastComparison4DSlowWithScaling(const tflite::ComparisonParams&, const tflite::RuntimeShape&, const T*, const tflite::RuntimeShape&, const T*, const tflite::RuntimeShape&, bool*) [with T = signed char; bool (* F)(long int, long int) = GreaterFn<long int>]	8
+../tensorflow/lite/micro/kernels/comparisons.cc:219:14:TfLiteStatus tflite::{anonymous}::GreaterEval(TfLiteContext*, TfLiteNode*)	38
+C:/Users/Kerem/STM32CubeIDE/workspace_1.19.0/HW6/tensorflow/lite/kernels/internal/reference/comparisons.h:159:13:void tflite::reference_ops::BroadcastComparison4DSlowWithScaling(const tflite::ComparisonParams&, const tflite::RuntimeShape&, const T*, const tflite::RuntimeShape&, const T*, const tflite::RuntimeShape&, bool*) [with T = signed char; bool (* F)(long int, long int) = GreaterEqualFn<long int>]	8
+../tensorflow/lite/micro/kernels/comparisons.cc:297:14:TfLiteStatus tflite::{anonymous}::GreaterEqualEval(TfLiteContext*, TfLiteNode*)	38
+C:/Users/Kerem/STM32CubeIDE/workspace_1.19.0/HW6/tensorflow/lite/kernels/internal/reference/comparisons.h:159:13:void tflite::reference_ops::BroadcastComparison4DSlowWithScaling(const tflite::ComparisonParams&, const tflite::RuntimeShape&, const T*, const tflite::RuntimeShape&, const T*, const tflite::RuntimeShape&, bool*) [with T = signed char; bool (* F)(long int, long int) = LessFn<long int>]	8
+../tensorflow/lite/micro/kernels/comparisons.cc:375:14:TfLiteStatus tflite::{anonymous}::LessEval(TfLiteContext*, TfLiteNode*)	38
+C:/Users/Kerem/STM32CubeIDE/workspace_1.19.0/HW6/tensorflow/lite/kernels/internal/reference/comparisons.h:159:13:void tflite::reference_ops::BroadcastComparison4DSlowWithScaling(const tflite::ComparisonParams&, const tflite::RuntimeShape&, const T*, const tflite::RuntimeShape&, const T*, const tflite::RuntimeShape&, bool*) [with T = signed char; bool (* F)(long int, long int) = LessEqualFn<long int>]	8
+../tensorflow/lite/micro/kernels/comparisons.cc:453:14:TfLiteStatus tflite::{anonymous}::LessEqualEval(TfLiteContext*, TfLiteNode*)	38

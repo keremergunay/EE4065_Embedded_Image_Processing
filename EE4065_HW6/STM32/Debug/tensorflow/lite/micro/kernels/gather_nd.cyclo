@@ -1,0 +1,3 @@
+../tensorflow/lite/micro/kernels/gather_nd.cc:31:14:TfLiteStatus tflite::{anonymous}::Prepare(TfLiteContext*, TfLiteNode*)	17
+../tensorflow/lite/micro/kernels/gather_nd.cc:188:14:TfLiteStatus tflite::{anonymous}::Eval(TfLiteContext*, TfLiteNode*)	19
+../tensorflow/lite/micro/kernels/gather_nd.cc:208:18:TFLMRegistration tflite::Register_GATHER_ND()	1

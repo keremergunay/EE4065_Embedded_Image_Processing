@@ -1,0 +1,4 @@
+../tensorflow/lite/micro/kernels/var_handle.cc:75:14:TfLiteStatus tflite::{anonymous}::Eval(TfLiteContext*, TfLiteNode*)	1
+../tensorflow/lite/micro/kernels/var_handle.cc:39:7:void* tflite::{anonymous}::Init(TfLiteContext*, const char*, size_t)	1
+../tensorflow/lite/micro/kernels/var_handle.cc:44:14:TfLiteStatus tflite::{anonymous}::Prepare(TfLiteContext*, TfLiteNode*)	3
+../tensorflow/lite/micro/kernels/var_handle.cc:89:18:TFLMRegistration tflite::Register_VAR_HANDLE()	1

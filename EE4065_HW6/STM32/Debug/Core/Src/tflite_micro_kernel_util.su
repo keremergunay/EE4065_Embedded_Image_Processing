@@ -1,0 +1,5 @@
+../Core/Src/tflite_micro_kernel_util.cc:81:21:tflite::CalculateActivationRangeQuantized(TfLiteContext*, TfLiteFusedActivation, TfLiteTensor*, int32_t*, int32_t*)::<lambda(float)>	8	static
+../Core/Src/tflite_micro_kernel_util.cc:31:6:bool tflite::HaveSameShapes(const TfLiteTensor*, const TfLiteTensor*)	12	static
+../Core/Src/tflite_micro_kernel_util.cc:49:14:TfLiteStatus tflite::CalculateActivationRangeQuantized(TfLiteContext*, TfLiteFusedActivation, TfLiteTensor*, int32_t*, int32_t*)	32	static
+../Core/Src/tflite_micro_kernel_util.cc:98:14:TfLiteStatus tflite::GetQuantizedConvolutionMultipler(TfLiteContext*, const TfLiteTensor*, const TfLiteTensor*, const TfLiteTensor*, TfLiteTensor*, double*)	24	static
+../Core/Src/tflite_micro_kernel_util.cc:119:14:TfLiteStatus tflite::PopulateConvolutionQuantizationParams(TfLiteContext*, const TfLiteTensor*, const TfLiteTensor*, const TfLiteTensor*, TfLiteTensor*, const TfLiteFusedActivation&, int32_t*, int*, int32_t*, int32_t*, int32_t*, int32_t*, int)	88	static

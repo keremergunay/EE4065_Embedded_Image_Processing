@@ -1,0 +1,3 @@
+../tensorflow/lite/micro/kernels/neg.cc:53:18:TFLMRegistration tflite::Register_NEG()	16	static
+C:/Users/Kerem/STM32CubeIDE/workspace_1.19.0/HW6/tensorflow/lite/kernels/internal/reference/neg.h:25:13:void tflite::reference_ops::Negate(const tflite::RuntimeShape&, const T*, const tflite::RuntimeShape&, T*) [with T = float]	24	static
+../tensorflow/lite/micro/kernels/neg.cc:30:14:TfLiteStatus tflite::{anonymous}::Eval(TfLiteContext*, TfLiteNode*)	72	static

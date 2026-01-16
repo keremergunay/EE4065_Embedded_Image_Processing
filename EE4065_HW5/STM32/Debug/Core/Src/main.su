@@ -1,0 +1,13 @@
+../Core/Src/main.cpp:95:16:int __io_putchar(int)	16	static
+../Core/Src/main.cpp:105:13:void MatMulAdd(const float*, const float*, const float*, float*, int, int)	40	static
+../Core/Src/main.cpp:121:13:void ReLU(float*, int)	24	static
+../Core/Src/main.cpp:133:13:void Softmax(float*, int)	48	static
+../Core/Src/main.cpp:160:13:void RunKWSInference()	192	static
+../Core/Src/main.cpp:221:13:void RunHDRInference()	112	static
+../Core/Src/main.cpp:281:13:void PrintMenu()	8	static
+../Core/Src/main.cpp:306:13:void PrintInfo()	8	static
+../Core/Src/main.cpp:323:5:int main()	16	static
+../Core/Src/main.cpp:419:6:void SystemClock_Config()	88	static
+../Core/Src/main.cpp:460:13:void MX_USART2_UART_Init()	8	static
+../Core/Src/main.cpp:478:13:void MX_GPIO_Init()	48	static
+../Core/Src/main.cpp:505:6:void Error_Handler()	16	static,ignoring_inline_asm

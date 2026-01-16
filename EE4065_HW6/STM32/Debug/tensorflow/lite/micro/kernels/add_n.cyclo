@@ -1,0 +1,5 @@
+../tensorflow/lite/micro/kernels/add_n.cc:136:14:TfLiteStatus tflite::{anonymous}::Prepare(TfLiteContext*, TfLiteNode*)	20
+C:/Users/Kerem/STM32CubeIDE/workspace_1.19.0/HW6/tensorflow/lite/kernels/internal/runtime_shape.h:96:7:int tflite::RuntimeShape::FlatSize() const	2
+C:/Users/Kerem/STM32CubeIDE/workspace_1.19.0/HW6/tensorflow/lite/kernels/internal/common.h:354:16:int32_t tflite::MultiplyByQuantizedMultiplierSmallerThanOneExp(int32_t, int32_t, int)	4
+../tensorflow/lite/micro/kernels/add_n.cc:194:14:TfLiteStatus tflite::{anonymous}::Eval(TfLiteContext*, TfLiteNode*)	14
+../tensorflow/lite/micro/kernels/add_n.cc:211:18:TFLMRegistration tflite::Register_ADD_N()	1

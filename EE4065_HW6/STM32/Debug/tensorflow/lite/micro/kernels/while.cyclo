@@ -1,0 +1,4 @@
+../tensorflow/lite/micro/kernels/while.cc:44:14:TfLiteStatus tflite::{anonymous}::Prepare(TfLiteContext*, TfLiteNode*)	7
+../tensorflow/lite/micro/kernels/while.cc:77:14:TfLiteStatus tflite::{anonymous}::Eval(TfLiteContext*, TfLiteNode*)	11
+../tensorflow/lite/micro/kernels/while.cc:39:7:void* tflite::{anonymous}::Init(TfLiteContext*, const char*, size_t)	1
+../tensorflow/lite/micro/kernels/while.cc:129:18:TFLMRegistration tflite::Register_WHILE()	1

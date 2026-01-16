@@ -1,0 +1,10 @@
+../tensorflow/lite/micro/kernels/transpose_conv.cc:144:7:void* tflite::{anonymous}::Init(TfLiteContext*, const char*, size_t)	8	static
+C:/Users/Kerem/STM32CubeIDE/workspace_1.19.0/HW6/tensorflow/lite/kernels/internal/runtime_shape.h:67:11:int32_t tflite::RuntimeShape::Dims(int) const	8	static
+C:/Users/Kerem/STM32CubeIDE/workspace_1.19.0/HW6/tensorflow/lite/kernels/internal/runtime_shape.h:96:7:int tflite::RuntimeShape::FlatSize() const	8	static
+C:/Users/Kerem/STM32CubeIDE/workspace_1.19.0/HW6/tensorflow/lite/kernels/internal/runtime_shape.h:133:12:int tflite::Offset(const RuntimeShape&, int, int, int, int)	16	static
+C:/Users/Kerem/STM32CubeIDE/workspace_1.19.0/HW6/tensorflow/lite/kernels/internal/types.h:264:12:int tflite::MatchingDim(const RuntimeShape&, int, const RuntimeShape&, int)	16	static
+C:/Users/Kerem/STM32CubeIDE/workspace_1.19.0/HW6/tensorflow/lite/kernels/internal/reference/integer_ops/transpose_conv.h:126:13:void tflite::reference_integer_ops::TransposeConv(const tflite::ConvParams&, const int32_t*, const int32_t*, const tflite::RuntimeShape&, const int16_t*, const tflite::RuntimeShape&, const int8_t*, const tflite::RuntimeShape&, const Scalar*, const tflite::RuntimeShape&, int16_t*, const tflite::RuntimeShape&, int8_t*, Scalar*) [with Scalar = long long int]	152	static
+../tensorflow/lite/micro/kernels/transpose_conv.cc:246:14:TfLiteStatus tflite::{anonymous}::Eval(TfLiteContext*, TfLiteNode*)	600	static
+C:/Users/Kerem/STM32CubeIDE/workspace_1.19.0/HW6/tensorflow/lite/kernels/padding.h:44:12:int tflite::ComputeOutSize(TfLitePadding, int, int, int, int)	8	static
+../tensorflow/lite/micro/kernels/transpose_conv.cc:149:14:TfLiteStatus tflite::{anonymous}::Prepare(TfLiteContext*, TfLiteNode*)	208	static
+../tensorflow/lite/micro/kernels/transpose_conv.cc:348:18:TFLMRegistration tflite::Register_TRANSPOSE_CONV()	16	static

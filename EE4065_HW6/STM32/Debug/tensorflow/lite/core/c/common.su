@@ -1,0 +1,31 @@
+../tensorflow/lite/core/c/common.cc:73:4:T* {anonymous}::TfLiteVarArrayCreate(int) [with T = TfLiteIntArray]	8	static
+../tensorflow/lite/core/c/common.cc:73:4:T* {anonymous}::TfLiteVarArrayCreate(int) [with T = TfLiteFloatArray]	8	static
+../tensorflow/lite/core/c/common.cc:87:4:T* {anonymous}::TfLiteVarArrayCopy(const T*) [with T = TfLiteIntArray]	16	static
+../tensorflow/lite/core/c/common.cc:109:8:size_t TfLiteIntArrayGetSizeInBytes(int)	0	static
+../tensorflow/lite/core/c/common.cc:113:5:int TfLiteIntArrayEqual(const TfLiteIntArray*, const TfLiteIntArray*)	8	static
+../tensorflow/lite/core/c/common.cc:117:5:int TfLiteIntArrayEqualsArray(const TfLiteIntArray*, int, const int*)	8	static
+../tensorflow/lite/core/c/common.cc:124:17:TfLiteIntArray* TfLiteIntArrayCreate(int)	0	static
+../tensorflow/lite/core/c/common.cc:128:17:TfLiteIntArray* TfLiteIntArrayCopy(const TfLiteIntArray*)	0	static
+../tensorflow/lite/core/c/common.cc:132:6:void TfLiteIntArrayFree(TfLiteIntArray*)	0	static
+../tensorflow/lite/core/c/common.cc:136:5:int TfLiteFloatArrayGetSizeInBytes(int)	0	static
+../tensorflow/lite/core/c/common.cc:142:19:TfLiteFloatArray* TfLiteFloatArrayCreate(int)	0	static
+../tensorflow/lite/core/c/common.cc:146:19:TfLiteFloatArray* TfLiteFloatArrayCopy(const TfLiteFloatArray*)	16	static
+../tensorflow/lite/core/c/common.cc:150:6:void TfLiteFloatArrayFree(TfLiteFloatArray*)	0	static
+../tensorflow/lite/core/c/common.cc:152:6:void TfLiteTensorDataFree(TfLiteTensor*)	8	static
+../tensorflow/lite/core/c/common.cc:171:6:void TfLiteQuantizationFree(TfLiteQuantization*)	16	static
+../tensorflow/lite/core/c/common.cc:189:6:void TfLiteSparsityFree(TfLiteSparsity*)	16	static
+../tensorflow/lite/core/c/common.cc:222:6:void TfLiteTensorFree(TfLiteTensor*)	16	static
+../tensorflow/lite/core/c/common.cc:237:6:void TfLiteTensorReset(TfLiteType, const char*, TfLiteIntArray*, TfLiteQuantizationParams, char*, size_t, TfLiteAllocationType, const void*, bool, TfLiteTensor*)	24	static
+../tensorflow/lite/core/c/common.cc:257:14:TfLiteStatus TfLiteTensorCopy(const TfLiteTensor*, TfLiteTensor*)	16	static
+../tensorflow/lite/core/c/common.cc:289:14:TfLiteStatus TfLiteTensorResizeMaybeCopy(size_t, TfLiteTensor*, bool)	16	static
+../tensorflow/lite/core/c/common.cc:336:14:TfLiteStatus TfLiteTensorRealloc(size_t, TfLiteTensor*)	0	static
+../tensorflow/lite/core/c/common.cc:341:13:const char* TfLiteTypeGetName(TfLiteType)	0	static
+../tensorflow/lite/core/c/common.cc:385:16:TfLiteDelegate TfLiteDelegateCreate()	8	static
+../tensorflow/lite/core/c/common.cc:388:23:TfLiteOpaqueDelegate* TfLiteOpaqueDelegateCreate(const TfLiteOpaqueDelegateBuilder*)	16	static
+../tensorflow/lite/core/c/common.cc:399:6:void TfLiteOpaqueDelegateDelete(TfLiteOpaqueDelegate*)	8	static
+../tensorflow/lite/core/c/common.cc:409:7:void* TfLiteOpaqueDelegateGetData(const TfLiteOpaqueDelegate*)	0	static
+../tensorflow/lite/core/c/common.cc:424:26:TfLiteAllocationStrategy TfLiteTensorGetAllocationStrategy(const TfLiteTensor*)	0	static
+../tensorflow/lite/core/c/common.cc:448:20:TfLiteRunStability TfLiteTensorGetBufferAddressStability(const TfLiteTensor*)	0	static
+../tensorflow/lite/core/c/common.cc:472:20:TfLiteRunStability TfLiteTensorGetDataStability(const TfLiteTensor*)	0	static
+../tensorflow/lite/core/c/common.cc:498:15:TfLiteRunStep TfLiteTensorGetDataKnownStep(const TfLiteTensor*)	0	static
+../tensorflow/lite/core/c/common.cc:525:15:TfLiteRunStep TfLiteTensorGetShapeKnownStep(const TfLiteTensor*)	0	static

@@ -1,0 +1,10 @@
+../tensorflow/lite/micro/kernels/resize_bilinear.cc:33:14:TfLiteStatus tflite::{anonymous}::Prepare(TfLiteContext*, TfLiteNode*)	56	static
+C:/Users/Kerem/STM32CubeIDE/workspace_1.19.0/HW6/tensorflow/lite/kernels/internal/runtime_shape.h:67:11:int32_t tflite::RuntimeShape::Dims(int) const	8	static
+C:/Users/Kerem/STM32CubeIDE/workspace_1.19.0/HW6/tensorflow/lite/kernels/internal/runtime_shape.h:109:3:tflite::RuntimeShape::RuntimeShape(int, const tflite::RuntimeShape&, int)	24	static
+C:/Users/Kerem/STM32CubeIDE/workspace_1.19.0/HW6/tensorflow/lite/kernels/internal/runtime_shape.h:133:12:int tflite::Offset(const RuntimeShape&, int, int, int, int)	16	static
+C:/Users/Kerem/STM32CubeIDE/workspace_1.19.0/HW6/tensorflow/lite/kernels/internal/types.h:264:12:int tflite::MatchingDim(const RuntimeShape&, int, const RuntimeShape&, int)	16	static
+C:/Users/Kerem/STM32CubeIDE/workspace_1.19.0/HW6/tensorflow/lite/kernels/internal/reference/resize_bilinear.h:29:13:void tflite::reference_ops::ComputeInterpolationValues(float, float, bool, int32_t, float*, int32_t*, int32_t*)	24	static
+C:/Users/Kerem/STM32CubeIDE/workspace_1.19.0/HW6/tensorflow/lite/kernels/internal/reference/resize_bilinear.h:119:13:void tflite::reference_ops::ComputeInterpolationValuesInteger(int32_t, int32_t, bool, int32_t, int32_t*, int32_t*, int32_t*)	8	static
+../tensorflow/lite/micro/kernels/resize_bilinear.cc:112:18:TFLMRegistration tflite::Register_RESIZE_BILINEAR()	16	static
+C:/Users/Kerem/STM32CubeIDE/workspace_1.19.0/HW6/tensorflow/lite/kernels/internal/reference/resize_bilinear.h:136:13:void tflite::reference_ops::ResizeBilinearInteger(const tflite::ResizeBilinearParams&, const tflite::RuntimeShape&, const T*, const tflite::RuntimeShape&, const int32_t*, const tflite::RuntimeShape&, T*) [with T = signed char]	256	static
+../tensorflow/lite/micro/kernels/resize_bilinear.cc:69:14:TfLiteStatus tflite::{anonymous}::Eval(TfLiteContext*, TfLiteNode*)	384	static

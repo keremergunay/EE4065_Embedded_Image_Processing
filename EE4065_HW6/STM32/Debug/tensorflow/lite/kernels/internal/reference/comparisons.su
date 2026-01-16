@@ -1,0 +1,4 @@
+C:/Users/Kerem/STM32CubeIDE/workspace_1.19.0/HW6/tensorflow/lite/kernels/internal/runtime_shape.h:67:11:int32_t tflite::RuntimeShape::Dims(int) const	8	static
+C:/Users/Kerem/STM32CubeIDE/workspace_1.19.0/HW6/tensorflow/lite/kernels/internal/runtime_shape.h:109:3:tflite::RuntimeShape::RuntimeShape(int, const tflite::RuntimeShape&, int)	24	static
+C:/Users/Kerem/STM32CubeIDE/workspace_1.19.0/HW6/tensorflow/lite/kernels/internal/common.h:1128:22:void tflite::CopyDimsToDesc(const RuntimeShape&, NdArrayDesc<N>*) [with int N = 4]	24	static
+../tensorflow/lite/kernels/internal/reference/comparisons.cc:21:33:tflite::reference_ops::BroadcastComparison4DSlowCommon tflite::reference_ops::BroadcastComparison4DSlowPreprocess(const tflite::RuntimeShape&, const tflite::RuntimeShape&, const tflite::RuntimeShape&)	152	static

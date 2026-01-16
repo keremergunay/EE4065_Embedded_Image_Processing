@@ -1,0 +1,2 @@
+../tensorflow/lite/kernels/internal/common.cc:20:9:int32_t tflite::MultiplyByQuantizedMultiplier(int32_t, int32_t, int)	4
+../tensorflow/lite/kernels/internal/common.cc:31:9:int32_t tflite::MultiplyByQuantizedMultiplier(int64_t, int32_t, int)	3

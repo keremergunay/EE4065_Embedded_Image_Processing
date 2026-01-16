@@ -1,0 +1,12 @@
+# Requirements for EE4065 Homework 5
+# Embedded Machine Learning - Keyword Spotting & Handwritten Digit Recognition
+
+numpy>=1.21.0
+scipy>=1.7.0
+scikit-learn>=1.0.0
+matplotlib>=3.4.0
+opencv-python>=4.5.0
+tensorflow==2.15.0
+keras>=2.15.0
+cmsisdsp>=1.9.0
+

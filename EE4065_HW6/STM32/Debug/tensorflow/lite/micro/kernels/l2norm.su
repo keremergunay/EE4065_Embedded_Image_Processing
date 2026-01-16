@@ -1,0 +1,11 @@
+../tensorflow/lite/micro/kernels/l2norm.cc:75:7:void* tflite::{anonymous}::Init(TfLiteContext*, const char*, size_t)	8	static
+../tensorflow/lite/micro/kernels/l2norm.cc:36:14:TfLiteStatus tflite::{anonymous}::Prepare(TfLiteContext*, TfLiteNode*)	48	static
+C:/Users/Kerem/STM32CubeIDE/workspace_1.19.0/HW6/tensorflow/lite/kernels/internal/runtime_shape.h:67:11:int32_t tflite::RuntimeShape::Dims(int) const	8	static
+C:/Users/Kerem/STM32CubeIDE/workspace_1.19.0/HW6/third_party/gemmlowp/fixedpoint/fixedpoint.h:329:21:IntegerType gemmlowp::SaturatingRoundingDoublingHighMul(IntegerType, IntegerType) [with IntegerType = long int]	0	static
+C:/Users/Kerem/STM32CubeIDE/workspace_1.19.0/HW6/tensorflow/lite/kernels/internal/types.h:264:12:int tflite::MatchingDim(const RuntimeShape&, int, const RuntimeShape&, int)	16	static
+C:/Users/Kerem/STM32CubeIDE/workspace_1.19.0/HW6/tensorflow/lite/kernels/internal/types.h:531:12:int tflite::MatchingFlatSizeSkipDim(const RuntimeShape&, int, const RuntimeShape&)	32	static
+C:/Users/Kerem/STM32CubeIDE/workspace_1.19.0/HW6/tensorflow/lite/kernels/internal/common.h:961:13:void tflite::GetInvSqrtQuantizedMultiplierExp(int32_t, int, int32_t*, int*)	40	static
+C:/Users/Kerem/STM32CubeIDE/workspace_1.19.0/HW6/tensorflow/lite/kernels/internal/reference/integer_ops/l2normalization.h:25:13:void tflite::reference_integer_ops::L2Normalization(int32_t, int32_t, int32_t, const int8_t*, int8_t*)	56	static
+../tensorflow/lite/micro/kernels/l2norm.cc:81:14:TfLiteStatus tflite::{anonymous}::Eval(TfLiteContext*, TfLiteNode*)	144	static
+../tensorflow/lite/micro/kernels/l2norm.cc:134:18:TFLMRegistration tflite::Register_L2NORM_REF()	16	static
+../tensorflow/lite/micro/kernels/l2norm.cc:138:18:TFLMRegistration tflite::Register_L2_NORMALIZATION()	8	static

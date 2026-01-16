@@ -1,0 +1,14 @@
+C:/Users/Kerem/STM32CubeIDE/workspace_1.19.0/HW6/tensorflow/lite/micro/micro_mutable_op_resolver.h:43:7:tflite::MicroMutableOpResolver<25>::~MicroMutableOpResolver()	1
+../Core/Src/main.cpp:157:47:void __tcf_0()	1
+../Core/Src/main.cpp:287:13:void PrintMenu()	1
+../Core/Src/main.cpp:194:57:void __tcf_1()	1
+C:/Users/Kerem/STM32CubeIDE/workspace_1.19.0/HW6/tensorflow/lite/micro/micro_mutable_op_resolver.h:43:7:virtual tflite::MicroMutableOpResolver<25>::~MicroMutableOpResolver()	1
+C:/Users/Kerem/STM32CubeIDE/workspace_1.19.0/HW6/tensorflow/lite/micro/micro_mutable_op_resolver.h:72:36:TfLiteStatus (* tflite::MicroMutableOpResolver<tOpCount>::GetOpDataParser(tflite::BuiltinOperator) const)(const tflite::Operator*, tflite::ErrorReporter*, tflite::BuiltinDataAllocator*, void**) [with unsigned int tOpCount = 25]	3
+C:/Users/Kerem/STM32CubeIDE/workspace_1.19.0/HW6/tensorflow/lite/micro/micro_mutable_op_resolver.h:61:27:const TFLMRegistration* tflite::MicroMutableOpResolver<tOpCount>::FindOp(const char*) const [with unsigned int tOpCount = 25]	4
+C:/Users/Kerem/STM32CubeIDE/workspace_1.19.0/HW6/tensorflow/lite/micro/micro_mutable_op_resolver.h:49:27:const TFLMRegistration* tflite::MicroMutableOpResolver<tOpCount>::FindOp(tflite::BuiltinOperator) const [with unsigned int tOpCount = 25]	4
+C:/Users/Kerem/STM32CubeIDE/workspace_1.19.0/HW6/tensorflow/lite/micro/micro_mutable_op_resolver.h:662:16:TfLiteStatus tflite::MicroMutableOpResolver<tOpCount>::AddBuiltin(tflite::BuiltinOperator, const TFLMRegistration&, tflite::TfLiteBridgeBuiltinParseFunction) [with unsigned int tOpCount = 25]	4
+../Core/Src/main.cpp:136:13:bool InitModel()	9
+../Core/Src/main.cpp:126:16:int __io_putchar(int)	1
+../Core/Src/main.cpp:498:6:void Error_Handler()	2
+../Core/Src/main.cpp:412:6:void SystemClock_Config()	3
+../Core/Src/main.cpp:326:5:int main()	15

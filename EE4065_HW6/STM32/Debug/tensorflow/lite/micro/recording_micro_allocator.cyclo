@@ -1,0 +1,19 @@
+C:/Users/Kerem/STM32CubeIDE/workspace_1.19.0/HW6/tensorflow/lite/micro/recording_micro_allocator.h:55:7:tflite::RecordingMicroAllocator::~RecordingMicroAllocator()	1
+C:/Users/Kerem/STM32CubeIDE/workspace_1.19.0/HW6/tensorflow/lite/micro/recording_micro_allocator.h:55:7:virtual tflite::RecordingMicroAllocator::~RecordingMicroAllocator()	1
+C:/Users/Kerem/STM32CubeIDE/workspace_1.19.0/HW6/third_party/flatbuffers/include/flatbuffers/table.h:35:13:flatbuffers::voffset_t flatbuffers::Table::GetOptionalFieldOffset(flatbuffers::voffset_t) const	2
+../tensorflow/lite/micro/recording_micro_allocator.cc:28:8:static size_t tflite::RecordingMicroAllocator::GetDefaultTailUsage()	1
+../tensorflow/lite/micro/recording_micro_allocator.cc:39:1:tflite::RecordingMicroAllocator::RecordingMicroAllocator(tflite::RecordingSingleArenaBufferAllocator*, tflite::MicroMemoryPlanner*)	1
+../tensorflow/lite/micro/recording_micro_allocator.cc:45:26:static tflite::RecordingMicroAllocator* tflite::RecordingMicroAllocator::Create(uint8_t*, size_t)	1
+../tensorflow/lite/micro/recording_micro_allocator.cc:64:20:tflite::RecordedAllocation tflite::RecordingMicroAllocator::GetRecordedAllocation(tflite::RecordedAllocationType) const	8
+../tensorflow/lite/micro/recording_micro_allocator.cc:87:1:const tflite::RecordingSingleArenaBufferAllocator* tflite::RecordingMicroAllocator::GetSimpleMemoryAllocator() const	1
+../tensorflow/lite/micro/recording_micro_allocator.cc:125:6:void tflite::RecordingMicroAllocator::PrintRecordedAllocation(tflite::RecordedAllocationType, const char*, const char*) const	2
+../tensorflow/lite/micro/recording_micro_allocator.cc:91:6:void tflite::RecordingMicroAllocator::PrintAllocations() const	1
+../tensorflow/lite/micro/recording_micro_allocator.cc:231:20:tflite::RecordedAllocation tflite::RecordingMicroAllocator::SnapshotAllocationUsage() const	1
+../tensorflow/lite/micro/recording_micro_allocator.cc:237:6:void tflite::RecordingMicroAllocator::RecordAllocationUsage(const tflite::RecordedAllocation&, tflite::RecordedAllocation&)	1
+C:/Users/Kerem/STM32CubeIDE/workspace_1.19.0/HW6/third_party/flatbuffers/include/flatbuffers/vector.h:169:15:flatbuffers::Vector<T>::return_type flatbuffers::Vector<T>::Get(flatbuffers::uoffset_t) const [with T = flatbuffers::Offset<tflite::SubGraph>]	1
+../tensorflow/lite/micro/recording_micro_allocator.cc:117:7:virtual void* tflite::RecordingMicroAllocator::AllocatePersistentBuffer(size_t)	1
+../tensorflow/lite/micro/recording_micro_allocator.cc:140:14:virtual TfLiteStatus tflite::RecordingMicroAllocator::AllocateNodeAndRegistrations(const tflite::Model*, tflite::SubgraphAllocations*)	3
+../tensorflow/lite/micro/recording_micro_allocator.cc:171:14:virtual TfLiteStatus tflite::RecordingMicroAllocator::AllocateTfLiteEvalTensors(const tflite::Model*, tflite::SubgraphAllocations*)	2
+../tensorflow/lite/micro/recording_micro_allocator.cc:194:14:virtual TfLiteStatus tflite::RecordingMicroAllocator::AllocateVariables(const tflite::SubGraph*, TfLiteEvalTensor*, const int32_t*)	1
+../tensorflow/lite/micro/recording_micro_allocator.cc:208:1:virtual TfLiteTensor* tflite::RecordingMicroAllocator::AllocatePersistentTfLiteTensorInternal()	1
+../tensorflow/lite/micro/recording_micro_allocator.cc:218:14:virtual TfLiteStatus tflite::RecordingMicroAllocator::PopulateTfLiteTensorFromFlatbuffer(const tflite::Model*, TfLiteTensor*, int, int, bool)	1
