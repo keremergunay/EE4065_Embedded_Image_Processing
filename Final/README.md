@@ -69,6 +69,4 @@ Implementation of Edge Impulse's FOMO algorithm for ultra-fast object detection.
 
 ---
 
-## 📜 License
-Yıldız Technical University - EE4065 Course Material.
-Based on various open-source implementations adapted for educational purposes.
+
